@@ -168,7 +168,7 @@ export class RDMDepositForm extends Component {
                   recordUI={record.ui}
                   required
                 />
-                <PublicationDateField required />
+                {/*<PublicationDateField required />*/}
                 <CreatibutorsField
                   label={i18next.t("Creators")}
                   labelIcon={"user"}
