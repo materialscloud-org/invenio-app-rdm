@@ -383,26 +383,34 @@ export class RDMDepositForm extends Component {
               >
                 <Sticky context={this.sidebarRef} offset={20}>
                   <Card>
-                    <Card.Content>
+{/*                    <Card.Content>
                       <DepositStatusBox />
-                    </Card.Content>
+                    </Card.Content>*/}
                     <Card.Content>
                       <Grid relaxed>
-                        <Grid.Column
+{/*                        <Grid.Column
                           computer={8}
                           mobile={16}
                           className="pb-0 left-btn-col"
                         >
                           <SaveButton fluid />
-                        </Grid.Column>
+                        </Grid.Column>*/}
 
                         <Grid.Column
+                          computer={16}
+                          mobile={16}
+                          className="pt-10"
+                        >
+                          <SaveButton fluid />
+                        </Grid.Column>
+
+                        {/*<Grid.Column
                           computer={8}
                           mobile={16}
                           className="pb-0 right-btn-col"
                         >
                           <PreviewButton fluid />
-                        </Grid.Column>
+                        </Grid.Column>*/}
 
                         <Grid.Column width={16} className="pt-10">
                           <PublishButton fluid />
