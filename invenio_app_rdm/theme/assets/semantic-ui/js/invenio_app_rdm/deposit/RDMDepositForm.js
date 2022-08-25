@@ -411,7 +411,7 @@ export class RDMDepositForm extends Component {
                     </Card.Content>
                   </Card>
 
-                  <AccessRightField
+{/*                  <AccessRightField
                     label={i18next.t("Visibility")}
                     labelIcon={"shield"}
                   />
@@ -426,7 +426,7 @@ export class RDMDepositForm extends Component {
                         />
                       </Card.Content>
                     </Card>
-                  )}
+                  )}*/}
                 </Sticky>
               </Grid.Column>
             </Ref>
