@@ -268,7 +268,7 @@ export class RDMDepositForm extends Component {
                 <PublisherField />
               </AccordionField>
 
-              <AccordionField
+{/*              <AccordionField
                 includesPaths={["metadata.funding"]}
                 active={true}
                 label={"Funding"}
@@ -362,7 +362,7 @@ export class RDMDepositForm extends Component {
                   labelIcon="barcode"
                   schemeOptions={this.vocabularies.metadata.identifiers.scheme}
                 />
-              </AccordionField>
+              </AccordionField>*/}
 
               <AccordionField
                 includesPaths={["metadata.related_identifiers"]}
