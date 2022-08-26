@@ -133,9 +133,16 @@ export class RDMDepositForm extends Component {
                   "metadata.description",
                   "metadata.additional_descriptions",
                   "metadata.rights",
+                  "metadata.contributors",
+                  "metadata.subjects",
+                  "metadata.languages",
+                  "metadata.dates",
+                  "metadata.version",
+                  "metadata.publisher",
+                  "metadata.related_identifiers",
                 ]}
                 active={true}
-                label={i18next.t("Basic information")}
+                label={i18next.t("Metadata")}
               >
                 {this.config.pids.map((pid) => (
                   <Fragment key={pid.scheme}>
@@ -219,7 +226,7 @@ export class RDMDepositForm extends Component {
                     link: result.props.url,
                   })}
                 />
-              </AccordionField>
+{/*              </AccordionField>
 
               <AccordionField
                 includesPaths={[
@@ -232,8 +239,8 @@ export class RDMDepositForm extends Component {
                 ]}
                 active={true}
                 label={i18next.t("Recommended information")}
-              >
-                <CreatibutorsField
+              >*/}
+{/*                <CreatibutorsField
                   addButtonLabel={i18next.t("Add contributor")}
                   label={i18next.t("Contributors")}
                   labelIcon={"user plus"}
@@ -245,13 +252,13 @@ export class RDMDepositForm extends Component {
                     addLabel: "Add contributor",
                     editLabel: "Edit contributor",
                   }}
-                />
+                />*/}
                 <SubjectsField
                   initialOptions={_get(record, "ui.subjects", null)}
                   limitToOptions={this.vocabularies.metadata.subjects.limit_to}
                 />
 
-                <LanguagesField
+{/*                <LanguagesField
                   initialOptions={_get(record, "ui.languages", []).filter(
                     (lang) => lang !== null
                   )} // needed because dumped empty record from backend gives [null]
@@ -265,8 +272,8 @@ export class RDMDepositForm extends Component {
                 />
                 <DatesField options={this.vocabularies.metadata.dates} />
                 <VersionField />
-                <PublisherField />
-              </AccordionField>
+                <PublisherField />*/}
+{/*              </AccordionField>*/}
 
 {/*              <AccordionField
                 includesPaths={["metadata.funding"]}
@@ -364,11 +371,11 @@ export class RDMDepositForm extends Component {
                 />
               </AccordionField>*/}
 
-              <AccordionField
+{/*              <AccordionField
                 includesPaths={["metadata.related_identifiers"]}
                 active={true}
                 label={i18next.t("Related works")}
-              >
+              >*/}
                 <RelatedWorksField
                   options={this.vocabularies.metadata.identifiers}
                 />
