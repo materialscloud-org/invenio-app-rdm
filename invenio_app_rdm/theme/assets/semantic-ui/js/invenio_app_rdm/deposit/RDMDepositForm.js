@@ -177,7 +177,7 @@ export class RDMDepositForm extends Component {
                 />
                 {/*<PublicationDateField required />*/}
                 <CreatibutorsField
-                  label={i18next.t("Creators")}
+                  label={i18next.t("Authors")}
                   labelIcon={"user"}
                   fieldPath={"metadata.creators"}
                   roleOptions={this.vocabularies.metadata.creators.role}
