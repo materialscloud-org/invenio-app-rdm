@@ -203,28 +203,6 @@
 
             {%- endblock record_header -%}
 
-            {# Title #}
-            {%- block record_title -%}
-              <section id="record-title-section" aria-label="{{ _('Record title and creators') }}">
-                <h1 id="record-title" class="wrap-overflowing-text">{{ metadata.title }}</h1>
-
-                {% if record.ui.creators or record.ui.contributors %}
-                  <section id="creatibutors" aria-label="{{ _('Creators and contributors') }}">
-                    {%- include "invenio_app_rdm/records/details/creatibutors.html" %}
-                  </section>
-                {% endif %}
-              </section>
-            {%- endblock record_title -%}
-
-            {# Citation & Description #}
-            {%- block record_content -%}
-              <section id="citation" aria-label="{{ _('Record citations') }}">
-                {%- include "invenio_app_rdm/records/details/citation.html" %}
-              </section>
-
-              {%- include "invenio_app_rdm/records/details/description.html" %}
-            {%- endblock record_content -%}
-
             {# Files #}
             {%- block record_files -%}
               {# record has files BUT passed files are empty. This happens when we display are request. #}
@@ -235,10 +213,10 @@
                     <h2 id="files-heading">{{ _('Files') }}</h2>
                     {%- set files = files|order_entries %}
 
-                    {%- if files|has_previewable_files -%}
+{#                    {%- if files|has_previewable_files -%}
                       {%-set preview_file = files|select_preview_file(default_preview=record.files.default_preview) %}
                       {{ preview_file_box(preview_file, record.id, is_preview, record) }}
-                    {%- endif -%}
+                    {%- endif -%}#}
                     {{ file_list_box(files, record.id, is_preview, record) }}
                   {% else %}
                     {# record has files BUT user cannot see files #}
@@ -267,6 +245,29 @@
                 </section>
               {%- endif %}
             {%- endblock record_files -%}
+
+            {# Title #}
+            {%- block record_title -%}
+              <section id="record-title-section" aria-label="{{ _('Record title and creators') }}">
+                <h1 id="record-title" class="wrap-overflowing-text">{{ metadata.title }}</h1>
+
+                {% if record.ui.creators or record.ui.contributors %}
+                  <section id="creatibutors" aria-label="{{ _('Creators and contributors') }}">
+                    {%- include "invenio_app_rdm/records/details/creatibutors.html" %}
+                  </section>
+                {% endif %}
+              </section>
+            {%- endblock record_title -%}
+
+            {# Citation & Description #}
+            {%- block record_content -%}
+              <section id="citation" aria-label="{{ _('Record citations') }}">
+                {%- include "invenio_app_rdm/records/details/citation.html" %}
+              </section>
+
+              {%- include "invenio_app_rdm/records/details/description.html" %}
+            {%- endblock record_content -%}
+
 
             {# Additional details #}
             {%- block record_details -%}
