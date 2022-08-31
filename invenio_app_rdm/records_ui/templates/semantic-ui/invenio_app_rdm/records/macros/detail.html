@@ -153,7 +153,7 @@
 
 {% macro show_related_identifiers(related_identifiers) %}
   {%- for group in related_identifiers | groupby('relation_type.title_l10n')%}
-  <dt class="ui tiny header">{{ group.grouper }}</dt>
+  {#<dt class="ui tiny header">{{ group.grouper }}</dt>#}
   {{ _identifiers_for_group(group.list) }}
   {%- endfor %}
 {% endmacro %}
