@@ -268,6 +268,9 @@
               {%- include "invenio_app_rdm/records/details/description.html" %}
             {%- endblock record_content -%}
 
+            {# Licenses #}
+            {%- include "invenio_app_rdm/records/details/side_bar/licenses.html" %}
+
             {# Keywords #}
             {% if record.metadata.subjects %}
             <div class="ui divider"></div>
