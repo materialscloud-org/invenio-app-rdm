@@ -27,6 +27,8 @@ from ..utils import set_default_value
 from .decorators import pass_draft, pass_draft_community, pass_draft_files
 from .filters import get_scheme_label
 
+from datetime import datetime
+
 
 #
 # Helpers
@@ -317,6 +319,7 @@ def deposit_edit(pid_value, draft=None, draft_files=None):
     files_dict = None if draft_files is None else draft_files.to_dict()
     ui_serializer = UIJSONSerializer()
     record = ui_serializer.serialize_object_to_dict(draft.to_dict())
+    record["metadata"]["publication_date"] = datetime.now().strftime("%Y-%m-%d")
 
     return render_template(
         "invenio_app_rdm/records/deposit.html",
