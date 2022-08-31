@@ -268,8 +268,6 @@
               {%- include "invenio_app_rdm/records/details/description.html" %}
             {%- endblock record_content -%}
 
-
-
             {# Keywords #}
             {% if record.metadata.subjects %}
             <div class="ui divider"></div>
@@ -277,9 +275,6 @@
               {%- include "invenio_app_rdm/records/details/subjects.html" %}
             </section>
             {% endif %}
-
-
-
 
             {# Additional details #}
             {%- block record_details -%}
