@@ -268,6 +268,17 @@
               {%- include "invenio_app_rdm/records/details/description.html" %}
             {%- endblock record_content -%}
 
+            <div class="ui divider"></div>
+
+            {# Keywords #}
+            {% if record.metadata.subjects %}
+            <section id="keywords-and-subjects" aria-label="{{ _('Keywords and subjects') }}" class="rel-mt-2">
+              {%- include "invenio_app_rdm/records/details/subjects.html" %}
+            </section>
+            {% endif %}
+
+
+
 
             {# Additional details #}
             {%- block record_details -%}
