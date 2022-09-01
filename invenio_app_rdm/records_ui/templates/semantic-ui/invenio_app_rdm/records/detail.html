@@ -254,8 +254,9 @@
             {%- endblock record_details -%}
 
             {%- block record_info -%}
-              <section id="record-info" aria-label="{{ _('Publication date and version number') }}">
-                  <div class="ui grid middle aligned">
+              <section id="record-info" aria-label="{{ _('Publication date and version number') }}" class="rel-mt-2">
+                  <h2>Publication date, version, & resource type</h2>
+                  <div class="ui grid middle aligned" style="padding-top: 0px">
                     <div class="two column row">
                       <div class="left floated left aligned column">
                         <span class="ui" title="{{ _('Publication date') }}">

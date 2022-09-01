@@ -26,7 +26,7 @@ show_alternate_identifiers, show_related_identifiers, show_funding, show_dates %
   <h2 id="record-details-heading">{{ _('Additional details') }}</h2>#}
 
   {# Tabs #}
-  <div role="tablist" class="ui top attached tabs menu invenio-tab-menu">
+  {#<div role="tablist" class="ui top attached tabs menu invenio-tab-menu">
     {% if record.ui.additional_titles %}
       <a role="tab"
         aria-selected="{{ active }}"
@@ -110,7 +110,7 @@ show_alternate_identifiers, show_related_identifiers, show_funding, show_dates %
         {{ _('References') }}
       </a>
     {% endif %}
-  </div>
+  </div>#}
 
   {# Content #}
   {% set active = true %}
@@ -147,17 +147,18 @@ show_alternate_identifiers, show_related_identifiers, show_funding, show_dates %
   {% endif %}
 
   {% if record.ui.related_identifiers %}
-    <div role="tabpanel"
+{#    <div role="tabpanel"
         class="ui bottom attached {{ 'active' if active }} tab segment"
         data-tab="related-works"
         aria-labelledby="related-works-tab"
         id="related-works"
         hidden="{{ not active }}"
-    >
-      <dl class="details-list">
+    >#}
+    <h2>References</h2>
+      <dl class="details-list" style="margin-top: 0px;">
         {{ show_related_identifiers(record.ui.related_identifiers) }}
       </dl>
-    </div>
+{#    </div>#}
     {% set active = false %}
   {% endif %}
 
