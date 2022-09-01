@@ -169,39 +169,28 @@
                   </div>
                 </section>
               {% endif %}
-
-              <section id="record-info" aria-label="{{ _('Publication date and version number') }}">
-                <div class="ui grid middle aligned">
-                  <div class="two column row">
-                    <div class="left floated left aligned column">
-                      <span class="ui" title="{{ _('Publication date') }}">
-                        {{ _('Published') }} {{ record.ui.publication_date_l10n_long }}
-                      </span>
-                      <span
-                        class="label text-muted"> | {{ _('Version {version_number}').format(version_number=record.ui.version) }}</span>
-                    </div>
-                    <div class="right floated right aligned column">
-                      {% if record.ui.resource_type %}
-                        <span class="ui label small grey"
-                              title="{{ _('Resource type') }}">{{ record.ui.resource_type.title_l10n }}</span>
-                      {% endif %}
-                      <span class="ui label small access-status {{ record.ui.access_status.id }}"
-                            title="{{ _('Access status') }}"
-                            data-tooltip="{{ record.ui.access_status.description_l10n }}"
-                            data-inverted=""
-                      >
-                        {% if record.ui.access_status.icon %}
-                          <i class="icon {{ record.ui.access_status.icon }}"></i>
-                        {% endif %}
-                        {{ record.ui.access_status.title_l10n }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </section>
               <div class="ui divider hidden"></div>
-
             {%- endblock record_header -%}
+
+            {# Title #}
+            {%- block record_title -%}
+              <section id="record-title-section" aria-label="{{ _('Record title and creators') }}">
+                <h1 id="record-title" class="wrap-overflowing-text">{{ metadata.title }}</h1>
+                {% if record.ui.creators or record.ui.contributors %}
+                  <section id="creatibutors" aria-label="{{ _('Creators and contributors') }}">
+                    {%- include "invenio_app_rdm/records/details/creatibutors.html" %}
+                  </section>
+                {% endif %}
+              </section>
+            {%- endblock record_title -%}
+
+            {# Citation & Description #}
+            {%- block record_content -%}
+  {#          <section id="citation" aria-label="{{ _('Record citations') }}">
+                {%- include "invenio_app_rdm/records/details/citation.html" %}
+              </section>#}
+              {%- include "invenio_app_rdm/records/details/description.html" %}
+            {%- endblock record_content -%}
 
             {# Files #}
             {%- block record_files -%}
@@ -246,34 +235,12 @@
               {%- endif %}
             {%- endblock record_files -%}
 
-            {# Title #}
-            {%- block record_title -%}
-              <section id="record-title-section" aria-label="{{ _('Record title and creators') }}">
-                <h1 id="record-title" class="wrap-overflowing-text">{{ metadata.title }}</h1>
-
-                {% if record.ui.creators or record.ui.contributors %}
-                  <section id="creatibutors" aria-label="{{ _('Creators and contributors') }}">
-                    {%- include "invenio_app_rdm/records/details/creatibutors.html" %}
-                  </section>
-                {% endif %}
-              </section>
-            {%- endblock record_title -%}
-
-            {# Citation & Description #}
-            {%- block record_content -%}
-{#              <section id="citation" aria-label="{{ _('Record citations') }}">
-                {%- include "invenio_app_rdm/records/details/citation.html" %}
-              </section>#}
-
-              {%- include "invenio_app_rdm/records/details/description.html" %}
-            {%- endblock record_content -%}
-
             {# Licenses #}
             {%- include "invenio_app_rdm/records/details/side_bar/licenses.html" %}
 
             {# Keywords #}
             {% if record.metadata.subjects %}
-            <div class="ui divider"></div>
+            {#<div class="ui divider"></div>#}
             <section id="keywords-and-subjects" aria-label="{{ _('Keywords and subjects') }}" class="rel-mt-2">
               {%- include "invenio_app_rdm/records/details/subjects.html" %}
             </section>
@@ -285,6 +252,38 @@
                 {%- include "invenio_app_rdm/records/details/details.html" %}
               </section>
             {%- endblock record_details -%}
+
+            {%- block record_info -%}
+              <section id="record-info" aria-label="{{ _('Publication date and version number') }}">
+                  <div class="ui grid middle aligned">
+                    <div class="two column row">
+                      <div class="left floated left aligned column">
+                        <span class="ui" title="{{ _('Publication date') }}">
+                          {{ _('Published') }} {{ record.ui.publication_date_l10n_long }}
+                        </span>
+                        <span
+                          class="label text-muted"> | {{ _('Version {version_number}').format(version_number=record.ui.version) }}</span>
+                      </div>
+                      <div class="right floated right aligned column">
+                        {% if record.ui.resource_type %}
+                          <span class="ui label small grey"
+                                title="{{ _('Resource type') }}">{{ record.ui.resource_type.title_l10n }}</span>
+                        {% endif %}
+  {#                      <span class="ui label small access-status {{ record.ui.access_status.id }}"
+                              title="{{ _('Access status') }}"
+                              data-tooltip="{{ record.ui.access_status.description_l10n }}"
+                              data-inverted=""
+                        >
+                          {% if record.ui.access_status.icon %}
+                            <i class="icon {{ record.ui.access_status.icon }}"></i>
+                          {% endif %}
+                          {{ record.ui.access_status.title_l10n }}
+                        </span>#}
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              {%- endblock record_info -%}
 
             {# Record footer #}
             {%- block record_footer -%}

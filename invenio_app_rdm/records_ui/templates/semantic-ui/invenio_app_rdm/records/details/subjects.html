@@ -12,7 +12,7 @@
 {% if subjects %}
   {% set keywords = subjects|rejectattr("scheme")|list %}
   {% if keywords %}
-  <h3 class="hidden">{{ _('Keywords') }}</h3>
+  <h2>{{ _('Keywords') }}</h2>
   <ul class="ui horizontal list no-bullets subjects">
     {%- for subject in keywords %}
       <li class="item">

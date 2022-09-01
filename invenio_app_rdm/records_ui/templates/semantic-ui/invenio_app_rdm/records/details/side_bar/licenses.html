@@ -19,9 +19,8 @@
 
 {% set rights = record.ui.get('rights') %}
 {% if rights %}
-<div class="ui divider"></div>
 <section id="licenses" aria-label="{{ _('Rights') }}" class="rel-mt-2">
-  <h3 class="hidden">{{ _('Licenses') }}</h3>
+  <h2>{{ _('License') }}</h2>
   <ul class="details-list m-0 p-0">
 
     {%- for license in rights%}
