@@ -35,13 +35,22 @@ import { axiosWithconfig, SearchItemCreators } from "../utils";
 import { DashboardResultView, DashboardSearchLayoutHOC } from "./base";
 import { createSearchAppInit } from "@js/invenio_search_ui";
 
-const statuses = {
+/*const statuses = {
   in_review: { color: "yellow", title: i18next.t("In review") },
   declined: { color: "red", title: i18next.t("Declined") },
   expired: { color: "orange", title: i18next.t("Expired") },
   draft_with_review: { color: "grey", title: i18next.t("Draft") },
   draft: { color: "grey", title: i18next.t("Draft") },
   new_version_draft: { color: "grey", title: i18next.t("New version draft") },
+};*/
+
+const statuses = {
+  in_review: { color: "yellow", title: i18next.t("In review") },
+  declined: { color: "red", title: i18next.t("Declined") },
+  expired: { color: "orange", title: i18next.t("Expired") },
+  draft_with_review: { color: "grey", title: i18next.t("Draft") },
+  draft: { color: "grey", title: i18next.t("Draft") },
+  new_version_draft: { color: "grey", title: i18next.t("Draft") },
 };
 
 export const RDMRecordResultsListItem = ({ result, index }) => {
@@ -107,23 +116,37 @@ export const RDMRecordResultsListItem = ({ result, index }) => {
       <Item.Content style={{ cursor: "default" }}>
         <Item.Extra className="labels-actions">
           {/* For reduced spacing between labels. */}
-          {result.status in statuses && result.status !== "published" && (
+{/*          {result.status in statuses && result.status !== "published" && (
             <Label size="tiny" color={statuses[result.status].color}>
               {statuses[result.status].title}
             </Label>
+          )}*/}
+
+          {!is_published && (
+            <Label size="tiny" color="red">
+              {statuses[result.status].title}
+            </Label>
           )}
+
+          <Label size="tiny" color="green">
+            {version}
+          </Label>
+
+          {is_published && (
           <Label size="tiny" color="blue">
-            {publicationDate} ({version})
+              {publicationDate}
           </Label>
-          <Label size="tiny" color="grey">
+          )}
+
+{/*          <Label size="tiny" color="grey">
             {resource_type}
-          </Label>
-          <Label size="tiny" className={`access-status ${access_status_id}`}>
+          </Label>*/}
+{/*          <Label size="tiny" className={`access-status ${access_status_id}`}>
             {access_status_icon && (
               <i className={`icon ${access_status_icon}`}></i>
             )}
             {access_status}
-          </Label>
+          </Label>*/}
           <Button
             compact
             size="small"
@@ -153,7 +176,7 @@ export const RDMRecordResultsListItem = ({ result, index }) => {
             length: 350,
           })}
         </Item.Description>
-        <Item.Extra>
+{/*        <Item.Extra>
           {subjects.map((subject, index) => (
             <Label key={index} size="tiny">
               {subject.title_l10n}
@@ -166,7 +189,7 @@ export const RDMRecordResultsListItem = ({ result, index }) => {
               </small>
             </div>
           )}
-        </Item.Extra>
+        </Item.Extra>*/}
       </Item.Content>
     </Item>
   );
