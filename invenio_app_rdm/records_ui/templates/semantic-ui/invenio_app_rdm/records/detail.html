@@ -202,11 +202,12 @@
                     <h2 id="files-heading">{{ _('Files') }}</h2>
                     {%- set files = files|order_entries %}
 
-{#                    {%- if files|has_previewable_files -%}
+                    {%- if files|has_previewable_files -%}
                       {%-set preview_file = files|select_preview_file(default_preview=record.files.default_preview) %}
                       {{ preview_file_box(preview_file, record.id, is_preview, record) }}
-                    {%- endif -%}#}
+                    {%- endif -%}
                     {{ file_list_box(files, record.id, is_preview, record) }}
+
                   {% else %}
                     {# record has files BUT user cannot see files #}
                     <div class="pt-0 pb-20">

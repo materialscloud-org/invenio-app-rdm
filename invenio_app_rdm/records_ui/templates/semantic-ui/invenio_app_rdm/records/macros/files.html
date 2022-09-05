@@ -31,11 +31,11 @@
 {% macro preview_file_box(file, pid, is_preview, record) %}
 <div class="">
   <div class="ui accordion panel mb-10 {{record.ui.access_status.id}}" id="preview" href="#collapsablePreview">
-    <div class="active title trigger panel-heading {{record.ui.access_status.id}} truncated" tabindex="0" aria-label="{{ _('File preview') }}">
-      <span id="preview-file-title">{{file.key}}</span>
+    <div class="title trigger panel-heading {{record.ui.access_status.id}} truncated" tabindex="0" aria-label="{{ _('File preview') }}">
+      <span id="preview-file-title">Preview of {{file.key}}</span>
       <i class="ui angle right icon"></i>
     </div>
-    <div id="collapsablePreview" class="active content rm-pt">
+    <div id="collapsablePreview" class="content rm-pt">
       <div>
         {{ preview_file('invenio_app_rdm_records.record_file_preview', pid_value=pid, filename=file.key, is_preview=is_preview) }}
       </div>
@@ -79,11 +79,11 @@
         <td>{{ file.size|filesizeformat(binary=binary_sizes) }}</td>
         <td class="right aligned">
           <span>
-{#            {% if with_preview and file_type|lower is previewable %}
-            <a role="button" class="ui compact mini button preview-link" href="{{ file_url_preview }}" target="preview-iframe" data-file-key="{{file.key}}">
+            {% if with_preview and file_type|lower is previewable %}
+            <a role="button" class="ui compact mini button preview-link" href="{{ file_url_preview }}" target="preview-iframe" data-file-key="Preview of {{file.key}}">
               <i class="eye icon"></i> {{_("Preview")}}
             </a>
-            {% endif %}#}
+            {% endif %}
             <a role="button" class="ui compact mini button" href="{{ file_url_download }}">
               <i class="download icon"></i>
               {{_('Download')}}
