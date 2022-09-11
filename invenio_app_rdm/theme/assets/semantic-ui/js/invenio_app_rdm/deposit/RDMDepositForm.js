@@ -390,9 +390,9 @@ export class RDMDepositForm extends Component {
               >
                 <Sticky context={this.sidebarRef} offset={20}>
                   <Card>
-{/*                    <Card.Content>
+                    <Card.Content>
                       <DepositStatusBox />
-                    </Card.Content>*/}
+                    </Card.Content>
                     <Card.Content>
                       <Grid relaxed>
 {/*                        <Grid.Column
