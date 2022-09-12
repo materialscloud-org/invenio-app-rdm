@@ -290,13 +290,13 @@ export const RDMRecordFacets = ({ aggs, currentResultsState }) => {
         label={i18next.t("View all versions")}
         filterValue={["allversions", "true"]}
       />
-      {aggs.map((agg) => {
+{/*      {aggs.map((agg) => {
         return (
           <div className="rdm-facet-container" key={agg.title}>
             <BucketAggregation title={agg.title} agg={agg} />
           </div>
         );
-      })}
+      })}*/}
       <Card className="borderless facet mt-0">
         <Card.Content>
           <Card.Header as="h2">{i18next.t("Help")}</Card.Header>
