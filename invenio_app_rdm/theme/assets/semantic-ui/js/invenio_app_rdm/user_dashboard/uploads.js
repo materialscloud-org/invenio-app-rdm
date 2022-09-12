@@ -253,7 +253,7 @@ export const DashboardUploadsSearchLayout = DashboardSearchLayoutHOC({
       positive
       icon="upload"
       href="/uploads/new"
-      content={i18next.t("New upload")}
+      content={i18next.t("New record")}
       floated="right"
     />
   ),
