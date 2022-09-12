@@ -48,9 +48,9 @@ const statuses = {
   in_review: { color: "yellow", title: i18next.t("In review") },
   declined: { color: "red", title: i18next.t("Declined") },
   expired: { color: "orange", title: i18next.t("Expired") },
-  draft_with_review: { color: "grey", title: i18next.t("Draft") },
-  draft: { color: "grey", title: i18next.t("Draft") },
-  new_version_draft: { color: "grey", title: i18next.t("Draft") },
+  draft_with_review: { color: "grey", title: i18next.t("Unpublished") },
+  draft: { color: "grey", title: i18next.t("Unpublished") },
+  new_version_draft: { color: "grey", title: i18next.t("Unpublished") },
 };
 
 export const RDMRecordResultsListItem = ({ result, index }) => {
