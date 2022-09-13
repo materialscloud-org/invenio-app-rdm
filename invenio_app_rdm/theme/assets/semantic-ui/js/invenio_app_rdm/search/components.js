@@ -68,10 +68,13 @@ export const RDMRecordResultsListItem = ({ result }) => {
     <Item>
       <Item.Content>
         <Item.Extra className="labels-actions">
-          <Label size="tiny" color="blue">
-            {publicationDate} ({version})
+          <Label size="tiny" color="green">
+            {version}
           </Label>
-          <Label size="tiny" color="grey">
+          <Label size="tiny" color="blue">
+            {publicationDate}
+          </Label>
+{/*          <Label size="tiny" color="grey">
             {resource_type}
           </Label>
           <Label size="tiny" className={`access-status ${access_status_id}`}>
@@ -79,7 +82,7 @@ export const RDMRecordResultsListItem = ({ result }) => {
               <i className={`icon ${access_status_icon}`} />
             )}
             {access_status}
-          </Label>
+          </Label>*/}
         </Item.Extra>
         <Item.Header as="h2">
           <a href={viewLink}>{title}</a>
@@ -90,7 +93,7 @@ export const RDMRecordResultsListItem = ({ result }) => {
         <Item.Description>
           {_truncate(description_stripped, { length: 350 })}
         </Item.Description>
-        <Item.Extra>
+{/*        <Item.Extra>
           {subjects.map((subject) => (
             <Label key={subject.title_l10n} size="tiny">
               {subject.title_l10n}
@@ -103,7 +106,7 @@ export const RDMRecordResultsListItem = ({ result }) => {
               </small>
             </div>
           )}
-        </Item.Extra>
+        </Item.Extra>*/}
       </Item.Content>
     </Item>
   );
