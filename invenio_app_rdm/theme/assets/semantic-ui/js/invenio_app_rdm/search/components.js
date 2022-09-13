@@ -28,6 +28,7 @@ import {
   List,
   Message,
   Segment,
+  Popup,
 } from "semantic-ui-react";
 import { SearchItemCreators } from "../utils";
 
@@ -374,8 +375,12 @@ export const RDMToggleComponent = ({
   var isChecked = _isChecked(userSelectionFilters);
   return (
     <Card className="borderless facet">
-      <Card.Content>
+      <Card.Content style={{"display": "flex", "align-items": "center"}}>
         <Card.Header as="h2">{title}</Card.Header>
+        <Popup
+          trigger={<Icon className="ml-5" name="info circle" style={{"line-height": "normal"}}/>}
+          content={"Search results will by default only display the latest published version of a record. However, toggling the flip switch allows you to view and search all versions."}
+        />
       </Card.Content>
       <Card.Content>
         <Checkbox
