@@ -403,13 +403,15 @@ export class RDMDepositForm extends Component {
                           <SaveButton fluid />
                         </Grid.Column>*/}
 
-                        <Grid.Column
-                          computer={16}
-                          mobile={16}
-                          className="pt-10"
-                        >
-                          <SaveButton fluid />
-                        </Grid.Column>
+                        {!record.is_published && (
+                          <Grid.Column
+                            computer={16}
+                            mobile={16}
+                            className="pt-10"
+                          >
+                              <SaveButton fluid />
+                          </Grid.Column>
+                        )}
 
                         {/*<Grid.Column
                           computer={8}
