@@ -8,7 +8,7 @@
 import { i18next } from "@translations/invenio_app_rdm/i18next";
 
 import React, { useState } from "react";
-import { Button, Grid, Icon, Message } from "semantic-ui-react";
+import { Button, Grid, Icon, Message, Popup } from "semantic-ui-react";
 
 import { EditButton } from "./EditButton";
 import { ShareButton } from "./ShareButton";
@@ -28,7 +28,13 @@ export const RecordManagement = ({
   };
 
   return (
-    <Grid columns={1} className="record-management">
+    <Grid columns={1} className="record-management" style={{"justify-content": "center"}}>
+
+        <Popup
+          trigger={<Icon className="ml-0" name="info circle" style={{"line-height": "normal", "padding-top": "5px", "padding-bottom": "0px", "padding-left": "0px", "padding-right": "0px", "margin": "0px"}}/>}
+          content={'Click "Edit" to modify the metadata of this published version of the record without changing its files.\nClick "New version" to add, change, or remove files.'}
+        />
+
       {permissions.can_edit && !isDraft && (
         <Grid.Column className="pb-5">
           <EditButton recid={recid} onError={handleError} />
@@ -61,14 +67,14 @@ export const RecordManagement = ({
             />
           </Grid.Column>
 
-          <Grid.Column className="pt-5">
+{/*          <Grid.Column className="pt-5">
             {permissions.can_manage && (
               <ShareButton
                 disabled={!permissions.can_update_draft}
                 recid={recid}
               />
             )}
-          </Grid.Column>
+          </Grid.Column>*/}
         </>
       )}
       {error && (
