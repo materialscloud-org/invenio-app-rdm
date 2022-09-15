@@ -379,7 +379,7 @@ export const RDMToggleComponent = ({
         <Card.Header as="h2">{title}</Card.Header>
         <Popup
           trigger={<Icon className="ml-5" name="info circle" style={{"line-height": "normal"}}/>}
-          content={"Search results will by default only display the latest published version of a record. However, toggling the flip switch allows you to view and search all versions."}
+          content={"By default, only the latest version of a record is displayed. Toggle the switch to view all versions."}
         />
       </Card.Content>
       <Card.Content>
