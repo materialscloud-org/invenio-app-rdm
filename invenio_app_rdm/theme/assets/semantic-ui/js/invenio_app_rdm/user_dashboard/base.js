@@ -22,7 +22,7 @@ import {
   Sort,
 } from "react-searchkit";
 import { GridResponsiveSidebarColumn } from "react-invenio-forms";
-import { Grid, Segment, Button } from "semantic-ui-react";
+import { Grid, Segment, Button, Popup, Icon } from "semantic-ui-react";
 
 import Overridable from "react-overridable";
 
@@ -34,6 +34,13 @@ export function DashboardResultView(props) {
       <Grid>
         <Grid.Row>
           <Grid.Column width={16}>
+            <div style={{"display": "flex", "align-items": "center"}}>
+              <h2 style={{"margin": "0px"}}>My records</h2>
+              <Popup
+                trigger={<Icon className="ml-5" name="info circle" style={{"line-height": "normal"}}/>}
+                content={"A record has one or more versions. A published version is visible to all users of the archive, who can download its files."}
+              />
+            </div>
             <Segment>
               <Grid>
                 <Overridable id="DashboardResultView.resultHeader" {...props}>
@@ -45,7 +52,7 @@ export function DashboardResultView(props) {
                       <Count
                         label={() => (
                           <>
-                            {total} {i18next.t("result(s) found")}
+                            {total} {i18next.t("version(s) found")}
                           </>
                         )}
                       />
