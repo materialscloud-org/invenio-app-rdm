@@ -32,7 +32,7 @@ export const RecordManagement = ({
 
         <Popup
           trigger={<Icon className="ml-0" name="info circle" style={{"line-height": "normal", "padding-top": "5px", "padding-bottom": "0px", "padding-left": "0px", "padding-right": "0px", "margin": "0px"}}/>}
-          content={'Click "Edit" to modify the metadata of this published version of the record without changing its files.\nClick "New version" to add, change, or remove files.'}
+          content={'Click "Edit" to modify the metadata of this published version of the record without changing its files.\nClick "New version" to add, change, or remove files. This leaves the current version unaffected by the changes.'}
         />
 
       {permissions.can_edit && !isDraft && (
