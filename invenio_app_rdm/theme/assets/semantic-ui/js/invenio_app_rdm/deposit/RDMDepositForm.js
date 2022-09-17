@@ -393,7 +393,7 @@ export class RDMDepositForm extends Component {
                     <Card.Content>
                       <DepositStatusBox />
                     </Card.Content>
-                    <Card.Content>
+                    <Card.Content style={{"padding-top": "0px"}}>
                       <Grid relaxed>
 {/*                        <Grid.Column
                           computer={8}
