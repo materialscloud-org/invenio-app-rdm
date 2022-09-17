@@ -290,8 +290,8 @@ export const RDMRecordFacets = ({ aggs, currentResultsState }) => {
   return (
     <aside aria-label={i18next.t("filters")} id="search-filters">
       <Toggle
-        title={i18next.t("Versions")}
-        label={i18next.t("View all versions")}
+        title={i18next.t("Record versions")}
+        label={i18next.t("All versions")}
         filterValue={["allversions", "true"]}
       />
 {/*      {aggs.map((agg) => {
@@ -379,7 +379,7 @@ export const RDMToggleComponent = ({
         <Card.Header as="h2">{title}</Card.Header>
         <Popup
           trigger={<Icon className="ml-5" name="info circle" style={{"line-height": "normal"}}/>}
-          content={"By default, only the latest version of each record is displayed. Toggle the switch to view all versions of each record."}
+          content={"By default, only the latest version of a record is displayed. Toggle the switch to view all versions."}
         />
       </Card.Content>
       <Card.Content>

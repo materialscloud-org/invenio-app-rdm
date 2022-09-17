@@ -38,7 +38,7 @@ export function DashboardResultView(props) {
               <h2 style={{"margin": "0px"}}>My records</h2>
               <Popup
                 trigger={<Icon className="ml-5" name="info circle" style={{"line-height": "normal"}}/>}
-                content={"A record has one or more versions. A published version is visible to all users of the archive, who can download its files."}
+                content={"Search in your records using the closest search bar. The search guide provides examples of advanced search queries."}
               />
             </div>
             <Segment>
