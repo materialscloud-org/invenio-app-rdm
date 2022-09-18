@@ -116,6 +116,12 @@ export class RDMDepositForm extends Component {
                     <em>{i18next.t("The record has no files.")}</em>
                   </div>
                 )}
+                <div className="required field title-field">
+                  <label className="field-label-class invenio-field-label">
+                    <i aria-hidden="true" className="file icon"></i>
+                    Files
+                  </label>
+                </div>
                 <FileUploader
                   isDraftRecord={!record.is_published}
                   quota={this.config.quota}
