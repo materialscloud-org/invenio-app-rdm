@@ -52,7 +52,7 @@ export function DashboardResultView(props) {
                       <Count
                         label={() => (
                           <>
-                            {total} {i18next.t("version(s) found")}
+                            {total} {i18next.t("result(s) found")}
                           </>
                         )}
                       />
