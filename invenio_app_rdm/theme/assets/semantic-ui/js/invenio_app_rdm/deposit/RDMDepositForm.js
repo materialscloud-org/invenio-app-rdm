@@ -438,7 +438,7 @@ export class RDMDepositForm extends Component {
 {/*                  <AccessRightField
                     label={i18next.t("Visibility")}
                     labelIcon={"shield"}
-                  />
+                  />*/}
                   {permissions?.can_delete_draft && (
                     <Card>
                       <Card.Content>
@@ -450,7 +450,7 @@ export class RDMDepositForm extends Component {
                         />
                       </Card.Content>
                     </Card>
-                  )}*/}
+                  )}
                 </Sticky>
               </Grid.Column>
             </Ref>
