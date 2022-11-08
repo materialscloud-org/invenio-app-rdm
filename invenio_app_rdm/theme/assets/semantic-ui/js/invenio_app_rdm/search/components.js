@@ -148,7 +148,7 @@ export const RDMRecordSearchBarElement = withState(
     updateQueryState,
     currentQueryState,
   }) => {
-    const placeholder = passedPlaceholder || i18next.t("Search in publications");
+    const placeholder = passedPlaceholder || i18next.t("Search all publications");
     const onBtnSearchClick = () => {
       updateQueryState({ ...currentQueryState, filters: [], queryString });
     };
