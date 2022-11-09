@@ -139,7 +139,7 @@ export const RecordVersionsList = (props) => {
           <RecordVersionItem item={record} activeVersion={true} />
         </>
       )}
-      { recordVersions.total > 1 &&
+{/*      { recordVersions.total > 1 &&
         <Grid className="mt-0">
           <Grid.Row centered>
             <a
@@ -150,7 +150,7 @@ export const RecordVersionsList = (props) => {
             </a>
           </Grid.Row>
         </Grid>
-      }
+      }*/}
     </List>
   );
 };
