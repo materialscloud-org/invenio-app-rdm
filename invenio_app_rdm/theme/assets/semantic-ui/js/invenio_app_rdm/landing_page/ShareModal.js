@@ -14,7 +14,8 @@ import { axiosWithconfig } from "../utils";
 export const ShareModal = (props) => {
   const [accessLinkObj, setAccessLinkObj] = useState();
   const [linkCreated, setLinkCreated] = useState(false);
-  const [shareMode, setShareMode] = useState("view");
+  //const [shareMode, setShareMode] = useState("view");
+  const [shareMode, setShareMode] = useState("edit");
   const [copied, setCopied] = useState(false);
 
   const dropdownOptions = [
@@ -44,8 +45,7 @@ export const ShareModal = (props) => {
     edit: (
       <span>
         <Trans>
-          Anyone with an account and this link{" "}
-          <strong>can edit all versions</strong> of this record & files.
+          Any authenticated user with this link can update the metadata of the published record and create a new version to add/delete files.
         </Trans>
       </span>
     ),
@@ -191,7 +191,7 @@ export const ShareModal = (props) => {
       <Modal.Content>
         <div className="share-content">
           <Input id="input" value={getAccessLink(accessLinkObj)} readOnly />
-          <Dropdown
+{/*          <Dropdown
             className="ui small share-link-dropdown"
             size="small"
             selectOnNavigation={false}
@@ -199,7 +199,7 @@ export const ShareModal = (props) => {
             options={dropdownOptions}
             defaultValue={shareMode}
             onChange={handleChangeMode}
-          />
+          />*/}
           <Popup position="top center"
                  content={i18next.t("Copied!")}
                  inverted

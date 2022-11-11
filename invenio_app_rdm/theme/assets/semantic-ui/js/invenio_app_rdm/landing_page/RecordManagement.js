@@ -32,7 +32,7 @@ export const RecordManagement = ({
 
         <Popup
           trigger={<Icon className="ml-0" name="info circle" style={{"line-height": "normal", "padding-top": "5px", "padding-bottom": "0px", "padding-left": "0px", "padding-right": "0px", "margin": "0px"}}/>}
-          content={'Click "Edit" to modify the metadata of the publication. Click "New version" to create a new version of the record.'}
+          content={'Click "Edit" to modify the metadata of the published record without creating a new version. Click "New version" to update the list of attached files. Click "Share" to let other users of your choice alter the record.'}
         />
 
       {permissions.can_edit && !isDraft && (
@@ -66,15 +66,14 @@ export const RecordManagement = ({
               disabled={!permissions.can_new_version}
             />
           </Grid.Column>
-
-{/*          <Grid.Column className="pt-5">
+          <Grid.Column className="pt-5">
             {permissions.can_manage && (
               <ShareButton
                 disabled={!permissions.can_update_draft}
                 recid={recid}
               />
             )}
-          </Grid.Column>*/}
+          </Grid.Column>
         </>
       )}
       {error && (

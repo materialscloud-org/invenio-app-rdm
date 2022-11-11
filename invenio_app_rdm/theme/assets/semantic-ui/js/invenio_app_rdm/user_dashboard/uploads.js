@@ -247,7 +247,7 @@ export const RDMEmptyResults = (props) => {
 };
 
 export const DashboardUploadsSearchLayout = DashboardSearchLayoutHOC({
-  searchBarPlaceholder: i18next.t("Search in my records"),
+  searchBarPlaceholder: i18next.t("Search my records"),
   newBtn: (
     <Button
       positive
