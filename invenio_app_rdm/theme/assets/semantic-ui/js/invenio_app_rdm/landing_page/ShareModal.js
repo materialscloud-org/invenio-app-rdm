@@ -45,7 +45,7 @@ export const ShareModal = (props) => {
     edit: (
       <span>
         <Trans>
-          Any authenticated user with this link can update the metadata of the published record and create a new version to add/delete files.
+          Give this link to other users, who will then be able to edit the current version of the record and create a new version.
         </Trans>
       </span>
     ),
