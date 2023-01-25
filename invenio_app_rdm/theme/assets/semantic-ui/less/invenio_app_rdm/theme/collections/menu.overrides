@@ -182,7 +182,7 @@
   }
 }
 
-@media all and (max-width: @largestTabletScreen) {
+@media all and (max-width: @largestMobileScreen) {
   #invenio-nav.ui.menu {
 
     &.active #invenio-menu.ui.menu {
