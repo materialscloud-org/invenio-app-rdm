@@ -33,9 +33,9 @@ export const RecordManagement = ({
         <Popup
           trigger={<Icon className="ml-0" name="info circle" style={{"line-height": "normal", "padding-top": "5px", "padding-bottom": "0px", "padding-left": "0px", "padding-right": "0px", "margin": "0px"}}/>}
           content={
-          'Click "Edit" to modify the record\'s metadata (title, authors, etc) without creating a new version. ' +
+          'Click "Edit" to modify the metadata (title, authors, etc) without creating a new version. ' +
             'Click "New version" if you wish to add or delete files or simply want to keep track of your changes. ' +
-            'Click "collaborate" to collaborate with others on that record.'}
+            'Click "Collaborate" to collaborate with others on that record.'}
         />
 
       {permissions.can_edit && !isDraft && (
