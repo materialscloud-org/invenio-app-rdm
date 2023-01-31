@@ -106,7 +106,13 @@ export class RDMDepositForm extends Component {
         <Container id="rdm-deposit-form" className="rel-mt-1">
           <Grid className="mt-25">
             <Grid.Column mobile={16} tablet={16} computer={11}>
-              <div style={{"color": "#DB2828"}}>* Please fill in the required fields.</div>
+              <div>
+                <ul className="color-red pl-15">
+                  <li>This is the <b>main archive</b>, intended to store and share research data.</li>
+                  <li>For testing and training purposes, use the <a href="https://demo.archive.materialscloud.org/" target="_blank">demo archive</a>.</li>
+                  <li>Please fill in the required fields (*) below.</li>
+                </ul>
+              </div>
               <AccordionField
                 includesPaths={["files.enabled"]}
                 active={true}
