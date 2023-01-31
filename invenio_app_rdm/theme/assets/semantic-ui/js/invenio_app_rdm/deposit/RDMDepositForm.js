@@ -107,10 +107,10 @@ export class RDMDepositForm extends Component {
           <Grid className="mt-25">
             <Grid.Column mobile={16} tablet={16} computer={11}>
               <div>
-                <ul className="color-red pl-15">
+                <ul className="pl-15">
                   <li>This is the <b>main archive</b>, intended to store and share research data.</li>
                   <li>For testing and training purposes, use the <a href="https://demo.archive.materialscloud.org/" target="_blank">demo archive</a>.</li>
-                  <li>Please fill in the required fields (*) below.</li>
+                  <li>Please fill in the required fields (<span className="color-red">*</span>) below.</li>
                 </ul>
               </div>
               <AccordionField
