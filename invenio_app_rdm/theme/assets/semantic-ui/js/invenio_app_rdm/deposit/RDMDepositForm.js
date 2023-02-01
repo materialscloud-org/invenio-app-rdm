@@ -109,7 +109,7 @@ export class RDMDepositForm extends Component {
               <div>
                 <ul className="pl-15">
                   <li>This is the <b>main archive</b>, intended for storing and sharing research data.</li>
-                  <li>For testing purposes, use the <a href="https://demo.archive.materialscloud.org/" target="_blank">demo archive</a>.</li>
+                  <li>For testing purposes, use the <a href="https://demo.archive.big-map.materialscloud.org/">demo archive</a>.</li>
                   <li>To create a record, fill in the required fields (<span className="color-red">*</span>) below.</li>
                 </ul>
               </div>
