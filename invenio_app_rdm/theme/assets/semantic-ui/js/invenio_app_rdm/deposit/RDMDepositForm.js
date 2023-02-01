@@ -108,9 +108,9 @@ export class RDMDepositForm extends Component {
             <Grid.Column mobile={16} tablet={16} computer={11}>
               <div>
                 <ul className="pl-15">
-                  <li>This is the <b>main archive</b>, intended for storing and sharing research data.</li>
-                  <li>For testing purposes, use the <a href="https://demo.archive.materialscloud.org/" target="_blank">demo archive</a>.</li>
-                  <li>Please fill in the required fields (<span className="color-red">*</span>) below.</li>
+                  <li>This is the <b>demo archive</b>, intended for exploring the archive's features and capabilities using, e.g., dummy data.</li>
+                  <li>For storing and sharing research data, use the <a href="https://archive.big-map.eu/" target="_blank">main archive</a>.</li>
+                  <li>To create a record, fill in the required fields (<span className="color-red">*</span>) below.</li>
                 </ul>
               </div>
               <AccordionField
