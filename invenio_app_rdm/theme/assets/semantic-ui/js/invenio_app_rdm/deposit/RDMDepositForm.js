@@ -109,7 +109,7 @@ export class RDMDepositForm extends Component {
               <div>
                 <ul className="pl-15">
                   <li>This is the <b>demo archive</b>, intended for exploring the archive's features and capabilities using, e.g., dummy data.</li>
-                  <li>For storing and sharing research data, use the <a href="https://archive.big-map.eu/" target="_blank">main archive</a>.</li>
+                  <li>For storing and sharing research data, use the <a href="https://archive.big-map.eu/">main archive</a>.</li>
                   <li>To create a record, fill in the required fields (<span className="color-red">*</span>) below.</li>
                 </ul>
               </div>
