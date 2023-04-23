@@ -6,64 +6,39 @@
 // Invenio RDM Records is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import axios from "axios";
 import _get from "lodash/get";
 import React from "react";
 import { i18next } from "@translations/invenio_app_rdm/i18next";
 import { DateTime } from "luxon";
-/**
- * Wrap a promise to be cancellable and avoid potential memory leaks
- * https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html
- * @param promise the promise to wrap
- * @returns {Object} an object containing the promise to resolve and a `cancel` fn to reject the promise
- */
-export const withCancel = (promise) => {
-  let isCancelled = false;
 
-  const wrappedPromise = new Promise((resolve, reject) => {
-    promise.then(
-      (val) => (isCancelled ? reject("UNMOUNTED") : resolve(val)),
-      (error) => (isCancelled ? reject("UNMOUNTED") : reject(error))
-    );
-  });
+export function SearchItemCreators({ creators, className }) {
+  let spanClass = "creatibutor-wrap separated";
+  className && (spanClass += ` ${className}`);
 
-  return {
-    promise: wrappedPromise,
-    cancel() {
-      isCancelled = true;
-    },
-  };
-};
-
-const apiConfig = {
-  withCredentials: true,
-  xsrfCookieName: "csrftoken",
-  xsrfHeaderName: "X-CSRFToken",
-};
-
-export const axiosWithconfig = axios.create(apiConfig);
-
-export function SearchItemCreators({ creators }) {
   function makeIcon(scheme, identifier, name) {
     let link = null;
     let linkTitle = null;
     let icon = null;
+    let alt = "";
 
     switch (scheme) {
       case "orcid":
-        link = "https://orcid.org/" + identifier;
+        link = `https://orcid.org/${identifier}`;
         linkTitle = i18next.t("ORCID profile");
         icon = "/static/images/orcid.svg";
+        alt = "ORCID logo";
         break;
       case "ror":
-        link = "https://ror.org/"+identifier;
+        link = `https://ror.org/${identifier}`;
         linkTitle = i18next.t("ROR profile");
         icon = "/static/images/ror-icon.svg";
+        alt = "ROR logo";
         break;
       case "gnd":
-        link = "https://d-nb.info/gnd/"+identifier;
+        link = `https://d-nb.info/gnd/${identifier}`;
         linkTitle = i18next.t("GND profile");
         icon = "/static/images/gnd-icon.svg";
+        alt = "GND logo";
         break;
       default:
         return null;
@@ -71,26 +46,22 @@ export function SearchItemCreators({ creators }) {
 
     icon = (
       <a
-         className="no-text-decoration"
-         href={ link }
-         aria-label={`${name}: ${linkTitle}`}
-         title={`${name}: ${linkTitle}`}
-         key={scheme}
+        className="no-text-decoration mr-0"
+        href={link}
+        aria-label={`${name}: ${linkTitle}`}
+        title={`${name}: ${linkTitle}`}
+        key={scheme}
       >
-        <img
-          className="inline-id-icon ml-5"
-          src= { icon }
-          alt=""
-        />
+        <img className="inline-id-icon ml-5" src={icon} alt={alt} />
       </a>
-    )
-    return (icon);
+    );
+    return icon;
   }
 
   function getIcons(creator) {
     let ids = _get(creator, "person_or_org.identifiers", []);
     let creatorName = _get(creator, "person_or_org.name", "No name");
-    let icons = ids.map(c => makeIcon(c.scheme, c.identifier, creatorName));
+    let icons = ids.map((c) => makeIcon(c.scheme, c.identifier, creatorName));
     return icons;
   }
 
@@ -107,11 +78,10 @@ export function SearchItemCreators({ creators }) {
     );
     return link;
   }
-  return creators.map((creator, index) => (
-    <span className="creatibutor-wrap" key={index}>
+  return creators.map((creator) => (
+    <span className={spanClass} key={creator.person_or_org.name}>
       {getLink(creator)}
       {getIcons(creator)}
-      {index < creators.length - 1 && ";"}
     </span>
   ));
 }

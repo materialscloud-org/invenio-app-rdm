@@ -23,7 +23,6 @@
 @darkGray: #333;
 @green: #048622;
 @signupColor: @green;
-@searchButtonColor: @secondaryColor;
 
 @accessRightOpen: @green;
 @accessRightRestricted: @red;
@@ -90,6 +89,7 @@
 @font-size-small: 12px;
 @font-size-tiny: 10px;
 @font-size-massive: 36px;
+@fontName: 'Helvetica';
 
 
 /*-------------------
@@ -130,3 +130,10 @@
 ------------------*/
 
 @userDashboardAvatarSize: 40px;
+@communityItemLogoWidth: 115px;
+
+
+/*------------------
+  Separators
+------------------*/
+@listSeparator: ";";

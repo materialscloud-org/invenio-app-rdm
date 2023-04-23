@@ -10,40 +10,33 @@
 import {
   SearchAppFacets,
   SearchAppResultsPane,
+  InvenioSearchPagination,
 } from "@js/invenio_search_ui/components";
 import { i18next } from "@translations/invenio_app_rdm/i18next";
-import React, { Component } from "react";
-import {
-  Count,
-  Pagination,
-  ResultsList,
-  ResultsPerPage,
-  SearchBar,
-  Sort,
-} from "react-searchkit";
+import React from "react";
+import { Count, ResultsList, SearchBar, Sort, buildUID } from "react-searchkit";
 import { GridResponsiveSidebarColumn } from "react-invenio-forms";
-import { Grid, Segment, Button, Popup, Icon } from "semantic-ui-react";
-
+import { Grid, Segment, Button } from "semantic-ui-react";
+import PropTypes from "prop-types";
 import Overridable from "react-overridable";
 
 export function DashboardResultView(props) {
-  const { sortOptions, paginationOptions, currentResultsState } = props;
+  const { sortOptions, paginationOptions, currentResultsState, appName } = props;
   const { total } = currentResultsState.data;
   return (
     total && (
       <Grid>
         <Grid.Row>
           <Grid.Column width={16}>
-            <div style={{"display": "flex", "align-items": "center"}}>
-              <h2 style={{"margin": "0px"}}>My records</h2>
-              <Popup
-                trigger={<Icon className="ml-5" name="info circle" style={{"line-height": "normal"}}/>}
-                content={"Use the closest search box to filter through your records. The search guide provides examples of advanced search queries."}
-              />
-            </div>
             <Segment>
               <Grid>
-                <Overridable id="DashboardResultView.resultHeader" {...props}>
+                <Overridable
+                  id={buildUID("ResultView.resultHeader", "", appName)}
+                  sortOptions={sortOptions}
+                  paginationOptions={paginationOptions}
+                  currentResultsState={currentResultsState}
+                  appName={appName}
+                >
                   <Grid.Row
                     verticalAlign="middle"
                     className="small pt-5 pb-5 highlight-background"
@@ -57,17 +50,14 @@ export function DashboardResultView(props) {
                         )}
                       />
                     </Grid.Column>
-                    <Grid.Column
-                      width={12}
-                      textAlign="right"
-                      className="padding-r-5"
-                    >
+                    <Grid.Column width={12} textAlign="right" className="padding-r-5">
                       {sortOptions && (
                         <Sort
                           values={sortOptions}
                           label={(cmp) => (
                             <>
-                              {i18next.t("Sort by")} {cmp}
+                              <label className="mr-10">{i18next.t("Sort by")}</label>
+                              {cmp}
                             </>
                           )}
                         />
@@ -75,7 +65,13 @@ export function DashboardResultView(props) {
                     </Grid.Column>
                   </Grid.Row>
                 </Overridable>
-                <Overridable id="DashboardResultView.resultList" {...props}>
+                <Overridable
+                  id={buildUID("ResultView.resultList", "", appName)}
+                  sortOptions={sortOptions}
+                  paginationOptions={paginationOptions}
+                  currentResultsState={currentResultsState}
+                  appName={appName}
+                >
                   <Grid.Row>
                     <Grid.Column>
                       <ResultsList />
@@ -86,43 +82,39 @@ export function DashboardResultView(props) {
             </Segment>
           </Grid.Column>
         </Grid.Row>
-        <Overridable id="DashboardResultView.resultFooter" {...props}>
-          <Grid.Row verticalAlign="middle">
-            <Grid.Column width={4} />
-            <Grid.Column width={8} textAlign="center" floated="right">
-              <Pagination
-                options={{
-                  size: "mini",
-                  showFirst: false,
-                  showLast: false,
-                }}
-              />
-            </Grid.Column>
-            <Grid.Column textAlign="right" width={4}>
-              <ResultsPerPage
-                values={paginationOptions.resultsPerPage}
-                label={(cmp) => (
-                  <>
-                    {" "}
-                    {cmp} {i18next.t("results per page")}
-                  </>
-                )}
-              />
-            </Grid.Column>
-          </Grid.Row>
+        <Overridable
+          id={buildUID("ResultView.resultFooter", "", appName)}
+          sortOptions={sortOptions}
+          paginationOptions={paginationOptions}
+          currentResultsState={currentResultsState}
+          appName={appName}
+        >
+          <InvenioSearchPagination paginationOptions={paginationOptions} />
         </Overridable>
       </Grid>
     )
   );
 }
 
+DashboardResultView.propTypes = {
+  sortOptions: PropTypes.array.isRequired,
+  paginationOptions: PropTypes.object.isRequired,
+  currentResultsState: PropTypes.object.isRequired,
+  appName: PropTypes.string,
+};
+
+DashboardResultView.defaultProps = {
+  appName: "",
+};
+
 export const DashboardSearchLayoutHOC = ({
   searchBarPlaceholder = "",
   newBtn = () => null,
-  ...props
+  appName = undefined,
 }) => {
   const DashboardUploadsSearchLayout = (props) => {
     const [sidebarVisible, setSidebarVisible] = React.useState(false);
+    const { config } = props;
 
     return (
       <Grid>
@@ -135,11 +127,11 @@ export const DashboardSearchLayoutHOC = ({
           />
         </Grid.Column>
 
-        <Grid.Column mobile={14} tablet={11} computer={8} floated="right">
+        <Grid.Column mobile={14} tablet={10} computer={8} floated="right">
           <SearchBar placeholder={searchBarPlaceholder} />
         </Grid.Column>
 
-        <Grid.Column mobile={16} tablet={4} computer={4} align="right">
+        <Grid.Column mobile={16} tablet={5} computer={4} align="right">
           {newBtn}
         </Grid.Column>
 
@@ -148,14 +140,23 @@ export const DashboardSearchLayoutHOC = ({
             width={4}
             open={sidebarVisible}
             onHideClick={() => setSidebarVisible(false)}
-            children={<SearchAppFacets aggs={props.config.aggs} />}
-          />
+          >
+            <SearchAppFacets aggs={config.aggs} appName={appName} />
+          </GridResponsiveSidebarColumn>
           <Grid.Column mobile={16} tablet={16} computer={12}>
-            <SearchAppResultsPane layoutOptions={props.config.layoutOptions} />
+            <SearchAppResultsPane
+              layoutOptions={config.layoutOptions}
+              appName={appName}
+            />
           </Grid.Column>
         </Grid.Row>
       </Grid>
     );
   };
+
+  DashboardUploadsSearchLayout.propTypes = {
+    config: PropTypes.object.isRequired,
+  };
+
   return DashboardUploadsSearchLayout;
 };

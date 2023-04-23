@@ -31,9 +31,9 @@
 {%- endmacro %}
 
 
-{% macro list_sizes(sizes) %}
-  {% for size in sizes %}
-    {{ size }}{{ ", " if not loop.last }}
+{% macro list_string_values(values) %}
+  {% for value in values %}
+    {{ value }}{{ ", " if not loop.last }}
   {% endfor %}
 {% endmacro %}
 
@@ -78,46 +78,38 @@
 
 
 {% macro show_funding(funding) %}
-  <div class="ui middle divided aligned relaxed list" role="list">
     {% for fund in funding %}
       {{ _show_funding_item(fund, loop.index0) }}
     {% endfor %}
-  </div>
 {% endmacro %}
 
 {% macro _show_funding_item(item, index) %}
-<div class="item" role="listitem" id="funding-item-{{ index }}">
-  <div class="content">
-    {%- if item.award -%}
-      {%- if item.award.title.en -%}
-        <div class="header">
-          <span class="mr-5">
-            {{ item.award.title.en }}
+  {%- if item.award -%}
+    {%- if item.award.title_l10n -%}
+      <dt class="ui tiny header">
+        <span class="mr-5">
+          {{ item.award.title_l10n }}
+        </span>
+
+        {%- if item.award.number -%}
+          <span class="ui mini basic label ml-0 mr-5" id="number-label-{{ index }}">
+            {{ item.award.number }}
           </span>
+        {%- endif -%}
 
-          {%- if item.award.number -%}
-            <div class="ui mini basic label ml-0 mr-5" id="number-label-{{ index }}">
-              {{ item.award.number }}
-            </div>
-          {%- endif -%}
-
-          {%- if item.award.identifiers -%}
-            {% for identifier in item.award.identifiers if 'url' == identifier.scheme %}
-              <a href="{{ identifier.identifier }}" target="_blank" rel="noopener noreferrer" aria-label="{{_('Open external link')}}">
-                <i class="external alternate icon"></i>
-              </a>
-            {%- endfor -%}
-          {%- endif -%}
-        </div>
-      {%- endif -%}
-      <div class="description">{{ item.funder.name if item.funder }}</div>
-    {%- else -%}
-      <div class="header">{{ item.funder.name if item.funder }}</div>
-      {# Newline is added to force a consistent height for list entries #}
-      <br>
+        {%- if item.award.identifiers -%}
+          {% for identifier in item.award.identifiers if 'url' == identifier.scheme %}
+            <a href="{{ identifier.identifier }}" target="_blank" rel="noopener noreferrer" aria-label="{{_('Open external link')}}">
+              <i class="external alternate icon"></i>
+            </a>
+          {%- endfor -%}
+        {%- endif -%}
+      </dt>
     {%- endif -%}
-  </div>
-</div>
+    <dd class="text-muted">{{ item.funder.name if item.funder }}</dd>
+  {%- else -%}
+    <dt class="ui tiny header">{{ item.funder.name if item.funder }}</dt>
+  {%- endif -%}
 {% endmacro %}
 
 
@@ -153,7 +145,7 @@
 
 {% macro show_related_identifiers(related_identifiers) %}
   {%- for group in related_identifiers | groupby('relation_type.title_l10n')%}
-  {#<dt class="ui tiny header">{{ group.grouper }}</dt>#}
+  <dt class="ui tiny header">{{ group.grouper }}</dt>
   {{ _identifiers_for_group(group.list) }}
   {%- endfor %}
 {% endmacro %}
@@ -180,4 +172,60 @@
   {% for lang in languages %}
     {{ lang.title_l10n }}{{ ", " if not loop.last }}
   {% endfor %}
+{% endmacro %}
+
+{% macro list_vocabulary_values(values) %}
+  {% if values.title_l10n is defined %}
+    {{ values.title_l10n }}
+  {% else %}
+    {% for value in values %}
+      {{ value.title_l10n }}{{ ", " if not loop.last }}
+    {% endfor %}
+  {% endif %}
+{% endmacro %}
+
+{% macro show_section_custom_fields(custom_fields, section_fields) %}
+  {% for field_cfg in section_fields %}
+    {% set field_value = custom_fields.get(field_cfg.field) %}
+    {% if field_value %}
+      {% if field_cfg.template %}
+        {% include field_cfg.template %}
+      {% else %}
+        <dt class="ui tiny header">{{ field_cfg.props.label }}</dt>
+        {% if field_value is string %}
+          <dd>{{ field_value | safe }}</dd>
+        {% elif field_value is boolean %}
+          <dd>
+            {% if field_value %}
+              {{ field_cfg.props.trueLabel}}
+            {% else %}
+              {{ field_cfg.props.falseLabel }}
+            {% endif %}
+          </dd>
+        {% elif field_cfg.is_vocabulary %}
+          <dd>{{ list_vocabulary_values(field_value) }}</dd>
+        {% elif field_value is mapping and field_value|length > 0 and field_value[0] is string %}
+            <dd>{{ list_string_values(field_value) }}</dd>
+        {% else %}
+          <dd>{{ field_value }}</dd>
+        {% endif %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endmacro %}
+
+{% macro show_detail_conference(conference) %}
+     <dd>
+       {%- if conference.url %}
+        <a href="{{conference.url}}"><i class="fa fa-external-link"></i> {{conference.title}}</a>
+       {%- else %}
+        {{conference.title}}
+       {%- endif%}
+       {%- if conference.place %}, {{conference.place}} {%- endif %}
+       {%- if conference.dates %}, {{conference.dates}} {%- endif %}
+       {% if conference.session %}(Session {{conference.session}}{% if conference.session_part %}, Part {{conference.session_part}}{%- endif %}){%- endif %}
+     </dd>
+     {%- if conference.url and not conference.title %}
+       <dd><a href="{{conference.url}}"><i class="fa fa-external-link"></i> {{_('Conference website')}}</a></dd>
+     {%- endif %}
 {% endmacro %}

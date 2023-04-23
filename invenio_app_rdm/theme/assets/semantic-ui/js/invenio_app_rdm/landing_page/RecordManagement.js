@@ -8,11 +8,12 @@
 import { i18next } from "@translations/invenio_app_rdm/i18next";
 
 import React, { useState } from "react";
-import { Button, Grid, Icon, Message, Popup } from "semantic-ui-react";
+import { Button, Grid, Icon, Message } from "semantic-ui-react";
 
 import { EditButton } from "./EditButton";
 import { ShareButton } from "./ShareButton";
-import { NewVersionButton } from "react-invenio-deposit-archive";
+import { NewVersionButton } from "react-invenio-deposit";
+import PropTypes from "prop-types";
 
 export const RecordManagement = ({
   record,
@@ -23,21 +24,12 @@ export const RecordManagement = ({
   const { id: recid } = record;
   const [error, setError] = useState("");
   const handleError = (errorMessage) => {
-    console.log(errorMessage);
+    console.error(errorMessage);
     setError(errorMessage);
   };
 
   return (
-    <Grid columns={1} className="record-management" style={{"justify-content": "center"}}>
-
-        <Popup
-          trigger={<Icon className="ml-0" name="info circle" style={{"line-height": "normal", "padding-top": "5px", "padding-bottom": "0px", "padding-left": "0px", "padding-right": "0px", "margin": "0px"}}/>}
-          content={
-          'Click "Edit" to modify the metadata (title, authors, etc) without creating a new version. ' +
-            'Click "New version" if you wish to add or delete files or simply want to keep track of your changes. ' +
-            'Click "Collaborate" to collaborate with others on that record.'}
-        />
-
+    <Grid columns={1} className="record-management">
       {permissions.can_edit && !isDraft && (
         <Grid.Column className="pb-5">
           <EditButton recid={recid} onError={handleError} />
@@ -47,7 +39,7 @@ export const RecordManagement = ({
         <Grid.Column>
           <Button
             fluid
-            color="orange"
+            className="warning"
             size="medium"
             onClick={() => (window.location = `/uploads/${recid}`)}
             icon
@@ -69,12 +61,10 @@ export const RecordManagement = ({
               disabled={!permissions.can_new_version}
             />
           </Grid.Column>
+
           <Grid.Column className="pt-5">
             {permissions.can_manage && (
-              <ShareButton
-                disabled={!permissions.can_update_draft}
-                recid={recid}
-              />
+              <ShareButton disabled={!permissions.can_update_draft} recid={recid} />
             )}
           </Grid.Column>
         </>
@@ -88,4 +78,11 @@ export const RecordManagement = ({
       )}
     </Grid>
   );
+};
+
+RecordManagement.propTypes = {
+  record: PropTypes.object.isRequired,
+  permissions: PropTypes.object.isRequired,
+  isDraft: PropTypes.bool.isRequired,
+  isPreviewSubmissionRequest: PropTypes.bool.isRequired,
 };

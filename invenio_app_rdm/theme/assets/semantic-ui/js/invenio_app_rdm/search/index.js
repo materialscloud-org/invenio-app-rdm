@@ -8,29 +8,58 @@
 
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import {
-  RDMBucketAggregationElement,
   RDMCountComponent,
   RDMEmptyResults,
   RDMErrorComponent,
-  RDMRecordFacets,
-  RDMRecordFacetsValues,
   RDMRecordResultsGridItem,
-  RDMRecordResultsListItem,
+  RDMRecordResultsListItemWithState,
   RDMRecordSearchBarContainer,
-  RDMRecordSearchBarElement,
+  RDMRecordMultipleSearchBarElement,
   RDMToggleComponent,
 } from "./components";
+import { parametrize, overrideStore } from "react-overridable";
+import {
+  ContribSearchAppFacets,
+  ContribBucketAggregationElement,
+  ContribBucketAggregationValuesElement,
+} from "@js/invenio_search_ui/components";
 
-createSearchAppInit({
-  "BucketAggregation.element": RDMBucketAggregationElement,
-  "BucketAggregationValues.element": RDMRecordFacetsValues,
-  "ResultsGrid.item": RDMRecordResultsGridItem,
-  "EmptyResults.element": RDMEmptyResults,
-  "ResultsList.item": RDMRecordResultsListItem,
-  "SearchApp.facets": RDMRecordFacets,
-  "SearchApp.searchbarContainer": RDMRecordSearchBarContainer,
-  "SearchBar.element": RDMRecordSearchBarElement,
-  "Count.element": RDMCountComponent,
-  "Error.element": RDMErrorComponent,
-  "SearchFilters.Toggle.element": RDMToggleComponent,
+const ContribSearchAppFacetsWithConfig = parametrize(ContribSearchAppFacets, {
+  toogle: true,
 });
+
+const appName = "InvenioAppRdm.Search";
+
+const RDMRecordSearchBarContainerWithConfig = parametrize(RDMRecordSearchBarContainer, {
+  appName: appName,
+});
+
+const RDMRecordResultsListItemWithConfig = parametrize(
+  RDMRecordResultsListItemWithState,
+  {
+    appName: appName,
+  }
+);
+
+export const defaultComponents = {
+  [`${appName}.BucketAggregation.element`]: ContribBucketAggregationElement,
+  [`${appName}.BucketAggregationValues.element`]: ContribBucketAggregationValuesElement,
+  [`${appName}.ResultsGrid.item`]: RDMRecordResultsGridItem,
+  [`${appName}.EmptyResults.element`]: RDMEmptyResults,
+  [`${appName}.ResultsList.item`]: RDMRecordResultsListItemWithConfig,
+  [`${appName}.SearchApp.facets`]: ContribSearchAppFacetsWithConfig,
+  [`${appName}.SearchApp.searchbarContainer`]: RDMRecordSearchBarContainerWithConfig,
+  [`${appName}.SearchBar.element`]: RDMRecordMultipleSearchBarElement,
+  [`${appName}.Count.element`]: RDMCountComponent,
+  [`${appName}.Error.element`]: RDMErrorComponent,
+  [`${appName}.SearchFilters.Toggle.element`]: RDMToggleComponent,
+};
+
+const overriddenComponents = overrideStore.getAll();
+
+createSearchAppInit(
+  { ...defaultComponents, ...overriddenComponents },
+  true,
+  "invenio-search-config",
+  true
+);

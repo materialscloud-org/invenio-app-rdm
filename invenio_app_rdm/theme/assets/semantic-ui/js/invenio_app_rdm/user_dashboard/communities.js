@@ -9,112 +9,26 @@
 
 import { createSearchAppInit } from "@js/invenio_search_ui";
 import { i18next } from "@translations/invenio_app_rdm/i18next";
-import _get from "lodash/get";
 import React from "react";
-import { Image } from "react-invenio-forms";
-import { BucketAggregation } from "react-searchkit";
+import { Button } from "semantic-ui-react";
 import {
-  Button,
-  Card,
-  Header,
-  Icon,
-  Input,
-  Item,
-  Label,
-  Segment,
-} from "semantic-ui-react";
-import {
-  RDMBucketAggregationElement,
-  RDMRecordFacetsValues,
-  RDMRecordSearchBarElement,
-  SearchHelpLinks,
-} from "../search/components";
+  CommunityItem,
+  ResultsGridItemTemplate,
+  CommunitiesEmptySearchResults,
+} from "@js/invenio_communities/community";
+import { RDMRecordSearchBarElement } from "../search/components";
 import { DashboardResultView, DashboardSearchLayoutHOC } from "./base";
+import {
+  ContribSearchAppFacets,
+  ContribBucketAggregationElement,
+  ContribBucketAggregationValuesElement,
+} from "@js/invenio_search_ui/components";
+import { overrideStore, parametrize } from "react-overridable";
 
-function ResultsGridItemTemplate({ result, index }) {
-  return (
-    <Card fluid key={index} href={`/communities/${result.metadata.id}`}>
-      <Card.Content>
-        <Card.Header>{result.metadata.title}</Card.Header>
-        <Card.Description>
-          <div
-            className="truncate-lines-2"
-            dangerouslySetInnerHTML={{
-              __html: result.metadata.description,
-            }}
-          />
-        </Card.Description>
-      </Card.Content>
-    </Card>
-  );
-}
-
-export function CommunitiesResultsItemTemplate({ result, index }) {
-  const community_type = _get(
-    result,
-    "metadata.type.title.en",
-    i18next.t("No community type")
-  );
-  return (
-    <Item key={index}>
-      <Image
-        wrapped
-        src={result.links.logo}
-        fallbackSrc="/static/images/square-placeholder.png"
-        size="tiny"
-      />
-      <Item.Content>
-        <Item.Extra className="user-communities labels-actions">
-          {/* For reduced spacing between labels. */}
-          <span>
-            <Label size="tiny" color="grey">
-              {community_type}
-            </Label>
-          </span>
-          <Button
-            compact
-            size="small"
-            floated="right"
-            href={`/communities/${result.id}/settings`}
-            className="mt-0"
-          >
-            <Icon name="edit" />
-            {i18next.t("Edit")}
-          </Button>
-          <Button
-            compact
-            size="small"
-            floated="right"
-            className="mt-0"
-            href={`/communities/${result.id}`}
-          >
-            <Icon name="eye" />
-            {i18next.t("View")}
-          </Button>
-        </Item.Extra>
-        <Item.Header href={`/communities/${result.id}`}>
-          {result.metadata.title}
-        </Item.Header>
-        {result.metadata.website && (
-          <a href={result.metadata.website} target="_blank">
-            {result.metadata.website}
-          </a>
-        )}
-        <Item.Meta>
-          <div
-            className="truncate-lines-2"
-            dangerouslySetInnerHTML={{
-              __html: result.metadata.description,
-            }}
-          />
-        </Item.Meta>
-      </Item.Content>
-    </Item>
-  );
-}
+export const appName = "InvenioAppRdm.DashboardCommunities";
 
 export const DashboardCommunitiesSearchLayout = DashboardSearchLayoutHOC({
-  searchBarPlaceholder: i18next.t("Search communities..."),
+  searchBarPlaceholder: i18next.t("Search in my communities..."),
   newBtn: (
     <Button
       positive
@@ -124,58 +38,29 @@ export const DashboardCommunitiesSearchLayout = DashboardSearchLayoutHOC({
       floated="right"
     />
   ),
+  appName: appName,
 });
 
-export const CommunitiesFacets = ({ aggs, currentResultsState }) => {
-  return (
-    <aside aria-label={i18next.t("filters")} id="search-filters">
-      {aggs.map((agg) => {
-        return (
-          <div className="rdm-facet-container" key={agg.title}>
-            <BucketAggregation title={agg.title} agg={agg} />
-          </div>
-        );
-      })}
-
-      <Card className="borderless facet mt-0">
-        <Card.Content>
-          <Card.Header as="h2">{i18next.t("Help")}</Card.Header>
-          <SearchHelpLinks />
-        </Card.Content>
-      </Card>
-    </aside>
-  );
-};
-
-export const RDMCommunitiesEmptyResults = (props) => {
-  const queryString = props.queryString;
-  return (
-    <>
-      <Segment placeholder textAlign="center">
-        <Header icon>
-          <Icon name="search" />
-          {i18next.t("No communities found!")}
-        </Header>
-        {queryString && (
-          <Button primary onClick={() => props.resetQuery()}>
-            {i18next.t("Reset search")}
-          </Button>
-        )}
-      </Segment>
-    </>
-  );
-};
+const DashboardResultViewWAppName = parametrize(DashboardResultView, {
+  appName: appName,
+});
 
 export const defaultComponents = {
-  "BucketAggregation.element": RDMBucketAggregationElement,
-  "BucketAggregationValues.element": RDMRecordFacetsValues,
-  "EmptyResults.element": RDMCommunitiesEmptyResults,
-  "ResultsList.item": CommunitiesResultsItemTemplate,
-  "ResultsGrid.item": ResultsGridItemTemplate,
-  "SearchApp.facets": CommunitiesFacets,
-  "SearchApp.layout": DashboardCommunitiesSearchLayout,
-  "SearchApp.results": DashboardResultView,
-  "SearchBar.element": RDMRecordSearchBarElement,
+  [`${appName}.BucketAggregation.element`]: ContribBucketAggregationElement,
+  [`${appName}.BucketAggregationValues.element`]: ContribBucketAggregationValuesElement,
+  [`${appName}.EmptyResults.element`]: CommunitiesEmptySearchResults,
+  [`${appName}.SearchApp.facets`]: ContribSearchAppFacets,
+  [`${appName}.ResultsList.item`]: CommunityItem,
+  [`${appName}.ResultsGrid.item`]: ResultsGridItemTemplate,
+  [`${appName}.SearchApp.layout`]: DashboardCommunitiesSearchLayout,
+  [`${appName}.SearchApp.results`]: DashboardResultViewWAppName,
+  [`${appName}.SearchBar.element`]: RDMRecordSearchBarElement,
 };
+const overriddenComponents = overrideStore.getAll();
 
-createSearchAppInit(defaultComponents);
+createSearchAppInit(
+  { ...defaultComponents, ...overriddenComponents },
+  true,
+  "invenio-search-config",
+  true
+);

@@ -11,19 +11,60 @@
 
 from os.path import splitext
 
-from flask import abort, current_app, g, redirect, render_template, request, \
-    url_for
+from flask import abort, current_app, g, redirect, render_template, request, url_for
 from flask_login import current_user
 from invenio_base.utils import obj_or_import_string
 from invenio_previewer.extensions import default
 from invenio_previewer.proxies import current_previewer
 from invenio_rdm_records.proxies import current_rdm_records
 from invenio_rdm_records.resources.serializers import UIJSONSerializer
+from invenio_stats.proxies import current_stats
 from marshmallow import ValidationError
 
-from .decorators import pass_file_item, pass_file_metadata, pass_is_preview, \
-    pass_record_files, pass_record_from_pid, pass_record_latest, \
-    pass_record_or_draft
+from invenio_app_rdm.records_ui.views.deposits import (
+    get_user_communities_memberships,
+    load_custom_fields,
+)
+
+from ..utils import get_external_resources
+from .decorators import (
+    pass_file_item,
+    pass_file_metadata,
+    pass_is_preview,
+    pass_record_files,
+    pass_record_from_pid,
+    pass_record_latest,
+    pass_record_or_draft,
+)
+
+
+def get_record_community(record):
+    """Return record's active community if any.
+
+    A record has an active community when:
+        - has either a request associated with a community
+        - or has been published to a community
+        - and the resolved i.e expanded community is not a "tombstone" i.e unknown
+
+    Returns a tuple with the resolved community or None and the community id
+    """
+    parent = record.get("parent", {})
+    community_review = parent.get("review", {}).get("receiver", {}).get("community")
+    community_default = parent.get("communities", {}).get("default")
+    community_id = community_default or community_review
+    expanded_parent = record.get("expanded", {}).get("parent", {})
+    expanded_community = expanded_parent.get("review", {}).get(
+        "receiver"
+    ) or expanded_parent.get("communities", {}).get("default")
+
+    if community_review or community_default:
+        is_community_deleted = expanded_community.get("is_ghost", False)
+        if is_community_deleted:
+            return None, community_id
+        else:
+            return expanded_community, community_id
+    else:
+        return None, None
 
 
 class PreviewFile:
@@ -43,7 +84,7 @@ class PreviewFile:
         self.uri = url or url_for(
             "invenio_app_rdm_records.record_file_download",
             pid_value=record_pid_value,
-            filename=self.filename
+            filename=self.filename,
         )
 
     def is_local(self):
@@ -66,64 +107,70 @@ class PreviewFile:
 #
 # Views
 #
+
+
 @pass_is_preview
 @pass_record_or_draft(expand=True)
 @pass_record_files
 def record_detail(pid_value, record, files, is_preview=False):
     """Record detail page (aka landing page)."""
     files_dict = None if files is None else files.to_dict()
-    record_ui = UIJSONSerializer().serialize_object_to_dict(record.to_dict())
+    record_ui = UIJSONSerializer().dump_obj(record.to_dict())
     is_draft = record_ui["is_draft"]
     if is_preview and is_draft:
+        # it is possible to save incomplete drafts that break the normal
+        # (preview) landing page rendering
+        # to prevent this from happening, we validate the draft's structure
+        # see: https://github.com/inveniosoftware/invenio-app-rdm/issues/1051
         try:
             current_rdm_records.records_service.validate_draft(
-                g.identity, record.id
+                g.identity, record.id, ignore_field_permissions=True
             )
         except ValidationError:
             abort(404)
 
+    # emit a record view stats event
+    emitter = current_stats.get_event_emitter("record-view")
+    if record is not None and emitter is not None:
+        emitter(current_app, record=record._record, via_api=False)
+
+    resolved_community, _ = get_record_community(record_ui)
     return render_template(
-        "invenio_app_rdm/records/detail.html",
+        current_app.config.get("APP_RDM_RECORD_LANDING_PAGE_TEMPLATE"),
         record=record_ui,
         files=files_dict,
-        permissions=record.has_permissions_to([
-            'edit', 'new_version', 'manage', 'update_draft', 'read_files',
-            'review'
-        ]),
+        user_communities_memberships=get_user_communities_memberships(),
+        permissions=record.has_permissions_to(
+            ["edit", "new_version", "manage", "update_draft", "read_files", "review"]
+        ),
+        custom_fields_ui=load_custom_fields()["ui"],
         is_preview=is_preview,
         is_draft=is_draft,
+        community=resolved_community,
+        external_resources=get_external_resources(record_ui),
     )
 
 
 @pass_is_preview
 @pass_record_or_draft(expand=False)
 def record_export(
-    pid_value,
-    record,
-    export_format=None,
-    permissions=None,
-    is_preview=False
+    pid_value, record, export_format=None, permissions=None, is_preview=False
 ):
     """Export page view."""
     # Get the configured serializer
-    exporter = current_app.config.get("APP_RDM_RECORD_EXPORTERS", {}).get(
-        export_format
-    )
+    exporter = current_app.config.get("APP_RDM_RECORD_EXPORTERS", {}).get(export_format)
     if exporter is None:
         abort(404)
 
     serializer = obj_or_import_string(exporter["serializer"])(
-        options={
-            "indent": 2,
-            "sort_keys": True,
-        }
+        **exporter.get("params", {})
     )
     exported_record = serializer.serialize_object(record.to_dict())
     contentType = exporter.get("content-type", export_format)
     filename = exporter.get("filename", export_format).format(id=pid_value)
     headers = {
-        'Content-Type': contentType,
-        'Content-Disposition': f'attachment; filename={filename}'
+        "Content-Type": contentType,
+        "Content-Disposition": f"attachment; filename={filename}",
     }
     return (exported_record, 200, headers)
 
@@ -137,7 +184,7 @@ def record_file_preview(
     pid_type="recid",
     file_metadata=None,
     is_preview=False,
-    **kwargs
+    **kwargs,
 ):
     """Render a preview of the specified file."""
     # Try to see if specific previewer is set
@@ -148,8 +195,9 @@ def record_file_preview(
         "invenio_app_rdm_records.record_file_download",
         pid_value=pid_value,
         filename=file_metadata.data["key"],
-        preview=1 if is_preview else 0
+        preview=1 if is_preview else 0,
     )
+
     # Find a suitable previewer
     fileobj = PreviewFile(file_metadata, pid_value, url)
     for plugin in current_previewer.iter_previewers(
@@ -163,14 +211,16 @@ def record_file_preview(
 
 @pass_is_preview
 @pass_file_item
-def record_file_download(
-    pid_value,
-    file_item=None,
-    is_preview=False,
-    **kwargs
-):
+def record_file_download(pid_value, file_item=None, is_preview=False, **kwargs):
     """Download a file from a record."""
     download = bool(request.args.get("download"))
+
+    # emit a file download stats event
+    emitter = current_stats.get_event_emitter("file-download")
+    if file_item is not None and emitter is not None:
+        obj = file_item._file.object_version
+        emitter(current_app, record=file_item._record, obj=obj, via_api=False)
+
     return file_item.send_file(as_attachment=download)
 
 
@@ -191,7 +241,7 @@ def record_from_pid(record=None, **kwargs):
 #
 def not_found_error(error):
     """Handler for 'Not Found' errors."""
-    return render_template(current_app.config['THEME_404_TEMPLATE']), 404
+    return render_template(current_app.config["THEME_404_TEMPLATE"]), 404
 
 
 def record_tombstone_error(error):
@@ -204,4 +254,4 @@ def record_permission_denied_error(error):
     if not current_user.is_authenticated:
         # trigger the flask-login unauthorized handler
         return current_app.login_manager.unauthorized()
-    return render_template(current_app.config['THEME_403_TEMPLATE']), 403
+    return render_template(current_app.config["THEME_403_TEMPLATE"]), 403

@@ -50,6 +50,16 @@
 
         > .item {
           flex: 1 0 0;
+          min-width: 0;
+          text-align: center;
+
+          &::before {
+            content: none;
+          }
+
+          &:not(:first-child) {
+            border-left: 1px solid @borderColor;
+          }
 
           &:first-child {
             border-radius: @borderRadius 0px 0px @borderRadius;
@@ -67,12 +77,23 @@
     }
 
     &.tablet {
-      @media screen and (max-width: @largestTabletScreen) {
+      @media screen and (min-width: @tabletBreakpoint) and (max-width: @largestTabletScreen) {
         display: flex;
         flex-direction: row;
+        width: 100%;
 
         > .item {
           flex: 1 0 0;
+          min-width: 9rem;
+          text-align: center;
+
+          &::before {
+            content: none;
+          }
+
+          &:not(:first-child) {
+            border-left: 1px solid @borderColor;
+          }
 
           &:first-child {
             border-radius: @borderRadius 0px 0px @borderRadius;
@@ -173,16 +194,16 @@
   width: 100%;
 
   .ui.input {
-    width: 90% !important;
+    width: auto !important;
 
     & > input {
-      width: 90% !important;
+      width: auto !important;
     }
 
   }
 }
 
-@media all and (max-width: @largestMobileScreen) {
+@media all and (max-width: @largestTabletScreen) {
   #invenio-nav.ui.menu {
 
     &.active #invenio-menu.ui.menu {
@@ -194,7 +215,7 @@
       background-color: rgb(255,255,255);
       height: 100vh;
       z-index: 3;
-      padding: 5rem 1.5rem 1.5rem 1.5rem;
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
       overflow-y: scroll;
 
       .item {
@@ -248,10 +269,8 @@
       }
 
       #rdm-close-burger-menu-icon {
-        position: absolute;
-        top: 2rem;
-        right: 0;
-        font-size: 20px;
+        margin-left: auto;
+        margin-bottom: 2rem;
 
         .navicon {
           background: transparent;

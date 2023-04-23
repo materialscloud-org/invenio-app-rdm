@@ -5,6 +5,14 @@
 
 #deposit-form {
 
+  .ui.form .required.fields:not(.grouped) > .field > .content > .header > label::after,
+  .ui.form .required.fields.grouped > .content > .header > label::after,
+  .ui.form .required.field > .content > .header > label::after  {
+    margin: -0.2em 0 0 0.2em;
+    content: '*';
+    color: @red;
+  }
+
   .ck-editor__editable {
     min-height: 8.5em;
   }
@@ -87,10 +95,10 @@
 
     .field,
     .invenio-group-field.fields {
-      margin-bottom: 2rem;
+      margin-bottom: 0.5rem;
 
       .field {
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
 
         &:last-child,
         &.subjects-field {
@@ -103,7 +111,7 @@
       }
 
       & ~ label.helptext {
-        margin-top: -1.5rem; // counterweight Form field bottom margin
+        margin-top: 0;
         margin-bottom: 2rem;
       }
 
@@ -134,3 +142,15 @@
     }
   }
 }
+
+/* due to complex config interface of CKEditor 5 */
+.generate-ck-editor-heights(@max, @i: 0) when (@i =< @max) {
+  .ck-height-@{i} {
+    .ck-editor__editable {
+      height: unit(@i, em) !important;
+    }
+  }
+  .generate-ck-editor-heights(@max, (@i + 1));
+}
+
+.generate-ck-editor-heights(30);

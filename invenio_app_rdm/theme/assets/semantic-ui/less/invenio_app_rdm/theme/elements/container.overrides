@@ -8,11 +8,6 @@
   padding-bottom: @celledPadding;
   margin-bottom: @defaultMargin;
 
-  @media screen and (max-width: @largestMobileScreen) {
-    margin-left: 0 !important; // Overwriting semantic-ui's !important. Please don't remove.
-    margin-right: 0 !important;
-  }
-
   &.with-submenu {
     padding-bottom: 0;
     margin-bottom: 0;
@@ -28,12 +23,19 @@
       height: 3em;
     }
   }
+
+  & + #communities-carousel {
+    margin-top: -@defaultMargin;
+  }
 }
 
 .ui.container.page-subheader {
   align-items: center;
   display: flex;
 
+  @media all and (max-width: @largestMobileScreen) {
+      justify-content: center;
+  }
 
   &.compact {
     height: 3em;
@@ -46,6 +48,9 @@
   }
 
   .page-subheader-element{
+    height: inherit;
+    display: flex;
+    align-items: center;
     padding-left: 0.5em;
     padding-right: 0.5em;
 
@@ -58,26 +63,43 @@
   }
 }
 
+.ui.container.carousel {
+  background-color: rgba(@brandColor, 0.1);
 
-.ui.container{
-  .frontpage-header{
-    display: flex;
-    align-items: center;
-    height: 20em;
+  & > .ui.grid.container {
+    max-width: @computerBreakpoint !important;
   }
 }
 
 .ui.container {
-  &#requests-timeline,
-  &.requests-feed-container,
-  &.invenio-tab-container {
+  .frontpage-header {
+    display: flex;
+    align-items: center;
+    height: 20em;
+  }
+
+  &.flex {
+    display: flex !important;
+  }
+
+  &.fluid-mobile {
     @media screen and (max-width: @largestMobileScreen) {
-      // overriding the !important for margins on .ui.container for the same breakpoint
+      width: 100% !important; // Overwriting semantic-ui's !important. Please don't remove.
+    }
+  }
+  &.ml-0-mobile {
+    @media screen and (max-width: @largestMobileScreen) {
       margin-left: 0 !important;
+    }
+  }
+
+  &.mr-0-mobile {
+    @media screen and (max-width: @largestMobileScreen) {
       margin-right: 0 !important;
     }
   }
 }
+
 .ui.container.requests-feed-container {
   position: relative;
 }
