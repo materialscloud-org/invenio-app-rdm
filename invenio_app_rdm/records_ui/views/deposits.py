@@ -334,7 +334,7 @@ def get_search_url():
     return current_app.config["APP_RDM_ROUTES"]["record_search"]
 
 
-def new_record():
+def new_record(community):
     """Create an empty record with default values."""
     record = dump_empty(RDMRecordSchema)
     record["files"] = {"enabled": True}
@@ -346,6 +346,12 @@ def new_record():
     defaults = current_app.config.get("APP_RDM_DEPOSIT_FORM_DEFAULTS") or {}
     for key, value in defaults.items():
         set_default_value(record, value, key)
+
+    # if there is a preselected community that is hidden, override some default values
+    if community and community["access"]["visibility"] == "restricted":
+        record["access"]["files"] = "restricted"
+        record["access"]["record"] = "restricted"
+
     return record
 
 
@@ -360,7 +366,7 @@ def deposit_create(community=None):
         current_app.config["APP_RDM_DEPOSIT_FORM_TEMPLATE"],
         forms_config=get_form_config(createUrl="/api/records"),
         searchbar_config=dict(searchUrl=get_search_url()),
-        record=new_record(),
+        record=new_record(community),
         files=dict(default_preview=None, entries=[], links={}),
         preselectedCommunity=community,
         permissions=get_record_permissions(
