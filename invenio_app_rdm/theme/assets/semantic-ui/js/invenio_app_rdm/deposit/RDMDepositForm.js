@@ -329,7 +329,7 @@ export class RDMDepositForm extends Component {
                   active
                   label={i18next.t("Recommended information")}
                 >
-                  <Overridable
+{/*                  <Overridable
                     id="InvenioAppRdm.Deposit.ContributorsField.container"
                     fieldPath="metadata.contributors"
                     vocabularies={this.vocabularies}
@@ -348,7 +348,7 @@ export class RDMDepositForm extends Component {
                         editLabel: "Edit contributor",
                       }}
                     />
-                  </Overridable>
+                  </Overridable>*/}
 
                   <Overridable
                     id="InvenioAppRdm.Deposit.SubjectsField.container"
@@ -363,7 +363,7 @@ export class RDMDepositForm extends Component {
                     />
                   </Overridable>
 
-                  <Overridable
+{/*                  <Overridable
                     id="InvenioAppRdm.Deposit.LanguagesField.container"
                     fieldPath="metadata.languages"
                     record={record}
@@ -407,10 +407,10 @@ export class RDMDepositForm extends Component {
                     fieldPath="metadata.publisher"
                   >
                     <PublisherField fieldPath="metadata.publisher" />
-                  </Overridable>
+                  </Overridable>*/}
                 </AccordionField>
               </Overridable>
-              <Overridable
+{/*              <Overridable
                 id="InvenioAppRdm.Deposit.AccordionFieldFunding.container"
                 ui={this.accordionStyle}
               >
@@ -522,7 +522,7 @@ export class RDMDepositForm extends Component {
                     />
                   </Overridable>
                 </AccordionField>
-              </Overridable>
+              </Overridable>*/}
 
               <Overridable
                 id="InvenioAppRdm.Deposit.AccordionFieldRelatedWorks.container"
