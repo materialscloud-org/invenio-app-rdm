@@ -37,7 +37,7 @@ import {
   TitlesField,
   VersionField,
   FundingField,
-} from "react-invenio-deposit";
+} from "react-invenio-deposit-archive";
 import { AccordionField, CustomFields } from "react-invenio-forms";
 import { Card, Container, Grid, Ref, Sticky } from "semantic-ui-react";
 import PropTypes from "prop-types";
@@ -555,7 +555,7 @@ export class RDMDepositForm extends Component {
                     config={customFieldsUI}
                     templateLoaders={[
                       (widget) => import(`@templates/custom_fields/${widget}.js`),
-                      (widget) => import(`react-invenio-deposit`),
+                      (widget) => import(`react-invenio-deposit-archive`),
                       (widget) => import(`react-invenio-forms`),
                     ]}
                     fieldPathPrefix="custom_fields"

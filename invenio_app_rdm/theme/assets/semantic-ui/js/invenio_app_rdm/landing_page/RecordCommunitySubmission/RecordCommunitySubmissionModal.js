@@ -6,7 +6,7 @@ import { http } from "react-invenio-forms";
 import {
   CommunitySelectionModalComponent,
   SubmitReviewModal,
-} from "react-invenio-deposit";
+} from "react-invenio-deposit-archive";
 
 export class RecordCommunitySubmissionModal extends Component {
   constructor(props) {
