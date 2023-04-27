@@ -601,7 +601,7 @@ export class RDMDepositForm extends Component {
                       </Card.Content>
                     </Card>
                   </Overridable>
-                  <Overridable
+{/*                  <Overridable
                     id="InvenioAppRdm.Deposit.AccessRightField.container"
                     fieldPath="access"
                   >
@@ -611,7 +611,7 @@ export class RDMDepositForm extends Component {
                       fieldPath="access"
                       showMetadataAccess={permissions?.can_manage_record_access}
                     />
-                  </Overridable>
+                  </Overridable>*/}
                   {permissions?.can_delete_draft && (
                     <Overridable
                       id="InvenioAppRdm.Deposit.CardDeleteButton.container"
