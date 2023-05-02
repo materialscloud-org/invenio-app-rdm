@@ -34,7 +34,7 @@ export const ShareButton = ({ disabled, recid }) => {
             labelPosition="left"
           >
             <Icon name="share square" />
-            {i18next.t("Share")}
+            {i18next.t("Collaborate")}
           </Button>
         }
       />
