@@ -46,10 +46,10 @@
 
 
 {%- macro file_list(
-    files, pid, is_preview, 
-    record=None, 
-    with_preview=true, 
-    download_endpoint='invenio_app_rdm_records.record_file_download', 
+    files, pid, is_preview,
+    record=None,
+    with_preview=true,
+    download_endpoint='invenio_app_rdm_records.record_file_download',
     preview_endpoint='invenio_app_rdm_records.record_file_preview'
 ) %}
   <table class="ui striped table files fluid">
@@ -120,7 +120,7 @@
       <i class="angle right icon"></i>
     </div>
     <div class="active content pt-0">
-      {% if record.access.files == 'restricted' %}
+{#      {% if record.access.files == 'restricted' %}
       <div class="ui {{ record.ui.access_status.message_class }} message file-box-message">
         <i class="ui {{ record.ui.access_status.icon }} icon"></i><b>{{ record.ui.access_status.title_l10n }}</b>
         <p>{{ record.ui.access_status.description_l10n }}</p>
@@ -128,7 +128,7 @@
           <p>{{_("Reason")}}: {{record.access.embargo.reason}}</p>
         {% endif%}
       </div>
-      {% endif %}
+      {% endif %}#}
       <div id="collapsableFiles">
         {{ file_list(files, pid, is_preview, record=record) }}
       </div>
