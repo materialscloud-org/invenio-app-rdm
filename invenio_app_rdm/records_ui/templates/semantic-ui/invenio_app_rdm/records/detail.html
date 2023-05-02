@@ -28,7 +28,7 @@
   <section id="banners" class="banners" aria-label="{{ _('Information banner') }}">
 
     <!-- COMMUNITY HEADER: hide it when displaying the submission request -->
-    {% if not is_preview_submission_request %}
+{#    {% if not is_preview_submission_request %}
       {% if community %}
         {% set is_community_restricted = community.access.visibility == 'restricted' %}
         <div class="ui fluid container page-subheader-outer with-submenu compact ml-0-mobile mr-0-mobile">
@@ -55,7 +55,7 @@
           </div>
         </div>
       {% endif %}
-    {% endif %}
+    {% endif %}#}
     <!-- /COMMUNITY HEADER -->
 
     <!-- PREVIEW HEADER -->
@@ -108,7 +108,7 @@
 
         {# Main content #}
         <article class="sixteen wide tablet eleven wide computer column main-record-content">
-          {% if record.access.record == 'restricted' %}
+{#          {% if record.access.record == 'restricted' %}
             <section id="record-access-status"
                      class="ui {{ record.ui.access_status.message_class }} message rel-mt-1"
                      aria-label="{{ _('Record access information') }}"
@@ -121,7 +121,7 @@
                 <p>{{ _("Reason") }}: {{ record.access.embargo.reason }}</p>
               {% endif %}
             </section>
-          {% endif %}
+          {% endif %}#}
 
           {%- block record_body -%}
 
@@ -173,7 +173,7 @@
                       <span
                         class="label text-muted"> | {{ _('Version {version_number}').format(version_number=record.ui.version) }}</span>
                     </div>
-                    <div class="right floated right aligned column">
+{#                    <div class="right floated right aligned column">
                       {% if record.ui.resource_type %}
                         <span class="ui label small neutral"
                               title="{{ _('Resource type') }}">{{ record.ui.resource_type.title_l10n }}</span>
@@ -188,7 +188,7 @@
                         {% endif %}
                         {{ record.ui.access_status.title_l10n }}
                       </span>
-                    </div>
+                    </div>#}
                   </div>
                 </div>
               </section>
