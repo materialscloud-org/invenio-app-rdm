@@ -241,19 +241,19 @@ def pass_draft_community(f):
     def view(**kwargs):
         comid = request.args.get("community")
 
-        # if no community id (e.g., /uploads/new?community=d961b50b-ea10-4cf3-9c39-1cf519e6c6f7) in query string
-        if not comid:
-            # get community slug for battery2030+
-            battery2030_slug = current_app.config["APP_RDM_BATTERY2030_COMMUNITY"]
-            # check if user is member of a community and get one of his community ids
-            user_identity = g.identity
-            needs = user_identity.provides
-            for need in needs:
-                if need.method == 'community':
-                    comid = need.value
-                    community = current_communities.service.read(id_=comid, identity=g.identity)
-                    if community.data['slug'] != battery2030_slug:
-                        break
+        # # if no community id (e.g., /uploads/new?community=d961b50b-ea10-4cf3-9c39-1cf519e6c6f7) in query string
+        # if not comid:
+        #     # get community slug for battery2030+
+        #     battery2030_slug = current_app.config["APP_RDM_BATTERY2030_COMMUNITY"]
+        #     # check if user is member of a community and get one of his community ids
+        #     user_identity = g.identity
+        #     needs = user_identity.provides
+        #     for need in needs:
+        #         if need.method == 'community':
+        #             comid = need.value
+        #             community = current_communities.service.read(id_=comid, identity=g.identity)
+        #             if community.data['slug'] != battery2030_slug:
+        #                 break
 
         if comid:
             community = current_communities.service.read(id_=comid, identity=g.identity)
